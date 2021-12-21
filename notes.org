@@ -1,0 +1,8 @@
+#+TITLE: Notes
+
+
+Dynamic Modules
+https://github.com/jkitchin/emacs-modules
+
+Chip8 in Elisp drawing stuff
+https://github.com/wasamasa/chip8.el/blob/master/chip8.el
