@@ -1,38 +1,23 @@
 cmake_minimum_required(VERSION 3.5)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-if (APPLE)
-# TODO hacky lol
-  set(CMAKE_CXX_COMPILER "/usr/local/bin/g++-11")
-endif()
-
 add_executable(
-  hw4-test
+  emacs_chip8_test
   test.cpp
-  test_lib.cpp
-  test_lib.hpp
-  ngram_test.cpp
-  ngram_test.hpp
 )
 
 target_link_libraries(
-  hw4-test
-  LINK_PRIVATE
-  hw4-lib
-  boolinq
+  emacs_chip8_test
+  PRIVATE
+  chip8
+  emacs_impl
 )
 
-target_link_libraries(
-  hw4-test
-  LINK_PRIVATE
-  hw4-lib
-  boolinq
-)
 
 target_include_directories(
-  hw4-test
+  emacs_chip8_test
   PUBLIC
-  ${hw4_SOURCE_DIR}/src
-  ${hw4_SOURCE_DIR}/lib/boolinq
-  ${hw4_SOURCE_DIR}/lib/wc++
+  ${emacs_chip8_SOURCE_DIR}
+  ${emacs_chip8_SOURCE_DIR}/lib/chip8
+  ${emacs_chip8_SOURCE_DIR}/lib/emacs_impl
 )

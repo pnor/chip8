@@ -1,10 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
 
-if (APPLE)
-# TODO hacky lol
-  set(CMAKE_CXX_COMPILER "/usr/local/bin/g++-11")
-endif()
-
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -14,7 +9,7 @@ set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-project(hw4 CXX)
+project(emacs_chip8 CXX)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -24,7 +19,6 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -Wall -ggdb -gdwarf-3")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -Wall")
 
 add_subdirectory(src)
-add_subdirectory(lib/boolinq)
-add_subdirectory(lib/wc++)
 add_subdirectory(test)
-add_subdirectory(extra-credit)
+add_subdirectory(lib/emacs_impl)
+add_subdirectory(lib/chip8)

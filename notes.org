@@ -6,3 +6,19 @@ https://github.com/jkitchin/emacs-modules
 
 Chip8 in Elisp drawing stuff
 https://github.com/wasamasa/chip8.el/blob/master/chip8.el
+
+Chip8 how to
+https://tobiasvl.github.io/blog/write-a-chip-8-emulator/
+
+* Setting up Project
+chip8 emulator sohuld be seperated from the editor
+=chip8=
+- chip8 module, does the emulation
+
+
+=emacs-impl=
+- emacs implantation, shows stuff in an emacs buffer and plays noises
+- ~has chip8 and emacs-module as depency~
+
+=emacs-module=
+- emacs dynamic module library

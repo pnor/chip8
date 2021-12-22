@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Handles building release dir
-# (copied from the TA)
-# Handles the build/run stuff (see help message for options)
-
-# ========================================================================
+#
+# ===== Help Function ===============
+#
 
 RED='\033[0;31m'
 CYAN='\033[0;36m'
@@ -20,15 +18,12 @@ function help_message {
         ./build               : no-args defers to make-debug
         ./build make-debug    : build debug build
         ./build make-release  : build release build
-        ./build run           : builds and runs hw4 in debug mode. Args after 1st are passed to executable
+        ./build run           : builds and runs in debug mode. Args after 1st are passed to executable
         ./build r             : make and runs debug without rerunning cmake
-        ./build run-release   : builds and runs hw4 in release mode.  Args after 1st are passed to executable
+        ./build run-release   : builds and runs in release mode.  Args after 1st are passed to executable
         ./build test          : builds and runs tests (in debug mode)
         ./build t             : make and runs debug tests without rerunning cmake
         ./build test-release  : builds and runs tests in release mode.
-        ./build run-ec        : builds and runs hw4-ec in debug mode. Args after 1st are passed to executable
-        ./build r-ec          : make and runs debug without rerunning cmake
-        ./build run-release-ec: builds and runs hw4-ec in release mode.  Args after 1st are passed to executable
         ./build clean         : Delete Releases
 
     flags:
@@ -36,17 +31,16 @@ function help_message {
     echo "$usage"
 }
 
-# ========================================================================
+#
+# ===== Variables ===============
+#
 
-# $1: destination to copy to
-function copy_files_needed_to_run {
-    # Copy files needed to run
-    cd ..
-    # icons
-    if ! [[ -f Release/bin/files ]]; then
-        cp -r files "$1"
-    fi
-}
+executable_name='emacs_chip8'
+test_name='emacs_chip8_test'
+
+#
+# ===== Functions ===============
+#
 
 # update `compile_commands.json` in root with the one in release
 function bump_compile_commands_json {
@@ -79,38 +73,34 @@ function build {
     fi
     make
 
-    copy_files_needed_to_run "Release/bin"
+    cd ../
     bump_compile_commands_json
 }
 
-# $1: should be `test`, `run`, `ec` on whether it should run the tests or run the program
+# $1: should be `test` or `run` to determine which to run
 # $2 and on: args to pass to process. Is IGNORED if its test
 function run {
     echo -e "${CYAN}Running code${NC}"
     cd "Release/bin"
     case "$1" in
         "test")
-            ./hw4-test
+            ./"$test_name"
             ;;
         "run")
             if (( "$#" > 1 )); then
                 shift
-                ./hw4 "$@"
+                ./"$executable_name" "$@"
             else
-                ./hw4
-            fi
-            ;;
-        "ec")
-            if (( "$#" > 1 )); then
-                shift
-                ./hw4-ec "$@"
-            else
-                ./hw4-ec
+                ./"$executable_name"
             fi
             ;;
     esac
     cd ../../
 }
+
+#
+# ===== Main Script ===============
+#
 
 
 if (( "$#" == 0 )); then
@@ -158,21 +148,6 @@ case "$arg" in
     "test-release")
         build "release"
         run "test"
-        ;;
-    "run-ec")
-        build "debug"
-        shift
-        run "ec" "$@"
-        ;;
-    "r-ec")
-        build "debug" 1
-        shift
-        run "ec" "$@"
-        ;;
-    "run-release-ec")
-        build "release"
-        shift
-        run "ec" "$@"
         ;;
     "clean")
         if [[ -d Release ]]; then
