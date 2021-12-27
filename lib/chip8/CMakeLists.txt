@@ -6,4 +6,7 @@ add_library(
   SHARED
   chip8.cpp
   chip8.hpp
+  font.hpp
+  instruction.cpp
+  instruction.hpp
 )
