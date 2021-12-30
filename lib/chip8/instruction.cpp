@@ -8,16 +8,18 @@
 namespace chip8 {
 
 using std::uint8_t;
+
 //
-// Helper
+// ===== Helper ===============
 //
+
 constexpr bool bitFromByte(size_t bitNumber, std::uint8_t byte) {
   assert(bitNumber < 8);
   return (byte >> bitNumber) & 0x01;
 }
 
 //
-// Instruction
+// ===== Instruction ===============
 //
 
 void Instructions::executeMachineLanguageRoutine(Chip8 *const chip8,
@@ -81,7 +83,7 @@ void Instructions::display(Chip8 *const chip8, OpCodeArgs args) {
     for (uint8_t j = 0; j < Chip8::DISPLAY_WIDTH / 8; j++) { // col
 
       // loop through each pixel in the byte
-      for (size_t k = 0; k < 8; i++) {
+      for (size_t k = 0; k < 8; k++) {
         const auto spriteBit = bitFromByte(k, nthSpriteData);
         if (spriteBit == 0) {
           continue;
@@ -97,5 +99,7 @@ void Instructions::display(Chip8 *const chip8, OpCodeArgs args) {
     }
     y++;
   }
+  // TODO call display hook?
+}
 
 } // namespace chip8

@@ -20,5 +20,6 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -Wall")
 
 add_subdirectory(src)
 add_subdirectory(test)
-add_subdirectory(lib/emacs_impl)
+add_subdirectory(lib/emacs_frontend)
+add_subdirectory(lib/terminal_frontend)
 add_subdirectory(lib/chip8)

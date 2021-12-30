@@ -2,15 +2,14 @@ cmake_minimum_required(VERSION 3.5)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_library(
-  emacs_impl
+  terminal_frontend
   SHARED
-  emacs_impl.cpp
-  emacs_impl.hpp
-  emacs-module.h
+  terminal_frontend.cpp
+  terminal_frontend.hpp
 )
 
 target_link_libraries(
-  emacs_impl
+  terminal_frontend
   PRIVATE
   chip8
   )

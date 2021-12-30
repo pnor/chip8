@@ -10,13 +10,15 @@ target_link_libraries(
   emacs_chip8
   PRIVATE
   chip8
-  emacs_impl
+  emacs_frontend
+  terminal_frontend
 )
 
 target_include_directories(
   emacs_chip8
   PUBLIC
   ${emacs_chip8_SOURCE_DIR}
-  ${emacs_chip8_SOURCE_DIR}/lib/emacs_impl
+  ${emacs_chip8_SOURCE_DIR}/lib/emacs_frontned
+  ${emacs_chip8_SOURCE_DIR}/lib/terminal_frontend
   ${emacs_chip8_SOURCE_DIR}/lib/chip8
 )

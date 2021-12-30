@@ -42,6 +42,14 @@ test_name='emacs_chip8_test'
 # ===== Functions ===============
 #
 
+
+# $1: destinaition to copy to
+function copy_assets {
+    if ! [[ -f "$1" ]]; then
+        cp -r files "$1"
+    fi
+}
+
 # update `compile_commands.json` in root with the one in release
 function bump_compile_commands_json {
     if [[ -f "compile_commands.json" ]]; then
@@ -73,7 +81,8 @@ function build {
     fi
     make
 
-    cd ../
+    cd ..
+    copy_assets "Release/bin/files"
     bump_compile_commands_json
 }
 

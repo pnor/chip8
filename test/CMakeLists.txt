@@ -18,7 +18,7 @@ target_link_libraries(
   PRIVATE
   gtest_main
   chip8
-  emacs_impl
+  emacs_frontend
 )
 
 target_include_directories(
@@ -26,5 +26,6 @@ target_include_directories(
   PUBLIC
   ${emacs_chip8_SOURCE_DIR}
   ${emacs_chip8_SOURCE_DIR}/lib/chip8
-  ${emacs_chip8_SOURCE_DIR}/lib/emacs_impl
+  ${emacs_chip8_SOURCE_DIR}/lib/emacs_frontend
+  ${emacs_chip8_SOURCE_DIR}/lib/term_frontend
 )
