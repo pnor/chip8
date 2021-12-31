@@ -14,7 +14,9 @@ TEST(HelloTest, BasicAssertions) {
 }
 
 TEST(Chip8InitTest, FontInit) {
-  auto chip8 = chip8::Chip8();
+  auto interface =
+      chip8::Chip8Interface([](chip8::Chip8 *) {}, [](chip8::Chip8 *) {});
+  auto chip8 = chip8::Chip8(interface);
   auto memory = chip8.dumpMemory();
   // 0
   EXPECT_EQ(memory[0x50 + 0], byte(0xF0));

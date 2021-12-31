@@ -6,6 +6,8 @@
 #include <cstdint>
 #include <vector>
 
+#include "chip8_interface.hpp"
+
 namespace chip8 {
 
 constexpr static size_t KILOBYTE = 1024;
@@ -47,7 +49,15 @@ private:
   constexpr static size_t NUM_REGISTERS = 16;
   std::array<std::uint8_t, NUM_REGISTERS> registers;
 
+  //
+  // Interface
+  //
+  Chip8Interface interface;
+
+  //
   // Helper Functions
+  //
+
   /** Store font data in memory from 0x50 to 0x9F */
   void setupFonts();
   Instruction fetch();
@@ -59,18 +69,22 @@ public:
   /** Number of CHIP-8 instructions emulated per second */
   size_t instructionsPerSecond = 700;
 
-  Chip8();
+  explicit Chip8(Chip8Interface interface);
 
+  //
   // Running Chip8 System
-
+  //
   /** Load ROM into memory */
   void loadRom();
   /** Run loaded ROM, starting the fetch/decode/execute loop */
   void run();
 
+  //
   // Getting State of the System
-
+  //
   std::array<std::byte, 4 * KILOBYTE> dumpMemory();
+  const std::array<std::array<bool, DISPLAY_HEIGHT>, DISPLAY_WIDTH> &
+  getDisplay();
 };
 
 } // namespace chip8

@@ -22,3 +22,15 @@ chip8 emulator sohuld be seperated from the editor
 
 =emacs-module=
 - emacs dynamic module library
+* The interface
+how does the frontend communicate with chip8?
+
+You can:
+- display stuff
+  + hook chip8 calls to tell forntend to update display
+- make sounds
+  + hook chip8 calls to tell frontend to make a sound
+- send input
+  + ? poll if input was pressed
+  + or hook chip8 calls to see if input pressed
+  + or frontend calls chip8 function...

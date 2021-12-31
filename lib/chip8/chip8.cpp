@@ -9,6 +9,7 @@
 
 namespace chip8 {
 using std::uint16_t;
+
 //
 // ===== Helper =========================
 //
@@ -29,7 +30,7 @@ void Chip8::setupFonts() {
   }
 }
 
-Chip8::Chip8() {
+Chip8::Chip8(Chip8Interface interface) : interface(interface) {
   std::fill(this->memory.begin(), this->memory.end(), std::byte(0));
 
   for (size_t i = 0; i < display.size(); i++) {
@@ -116,5 +117,10 @@ void Chip8::run() {
 //
 
 std::array<std::byte, 4 * KILOBYTE> Chip8::dumpMemory() { return memory; }
+
+const std::array<std::array<bool, Chip8::DISPLAY_HEIGHT>, Chip8::DISPLAY_WIDTH>
+    &Chip8::getDisplay() {
+  return display;
+}
 
 } // namespace chip8

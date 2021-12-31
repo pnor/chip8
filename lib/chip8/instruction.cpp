@@ -31,7 +31,7 @@ void Instructions::clearScreen(Chip8 *const chip8, OpCodeArgs args) {
   for (size_t i = 0; i < chip8->display.size(); i++) {
     std::fill(chip8->display[i].begin(), chip8->display[i].end(), false);
   }
-  // TODO call display hook?
+  chip8->interface.callDisplayHook(chip8);
 }
 
 void Instructions::jump(Chip8 *const chip8, OpCodeArgs args) {
@@ -99,7 +99,7 @@ void Instructions::display(Chip8 *const chip8, OpCodeArgs args) {
     }
     y++;
   }
-  // TODO call display hook?
+  chip8->interface.callDisplayHook(chip8);
 }
 
 } // namespace chip8

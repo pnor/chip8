@@ -13,3 +13,9 @@ target_link_libraries(
   PRIVATE
   chip8
   )
+
+target_include_directories(
+  terminal_frontend
+  PUBLIC
+  ${emacs_chip8_SOURCE_DIR}/lib/chip8
+)
