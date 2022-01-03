@@ -81,9 +81,6 @@ void Chip8::decodeAndExecute(Instruction instruction) {
   OpCode opCode = (instruction & 0xF000) >> 12;
   OpCodeArgs args = instruction & 0x0FFF;
 
-  std::cout << "PC: " << (int)PC << std::endl;
-  std::cout << "opCode: " << (int)opCode << std::endl;
-
   switch (opCode) {
   case 0x0: {
     auto nibble = lastNibble(args);
@@ -127,9 +124,7 @@ void Chip8::decodeAndExecute(Instruction instruction) {
 }
 
 void Chip8::run() {
-  auto maxFetch = 1000;
-  auto curFetch = 0;
-  while (curFetch++ < maxFetch) {
+  while (true) {
     Instruction instruction = fetch();
     decodeAndExecute(instruction);
   }

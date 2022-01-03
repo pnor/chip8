@@ -67,7 +67,6 @@ void Instructions::setIndexRegisterI(Chip8 *const chip8, OpCodeArgs args) {
 }
 
 void Instructions::display(Chip8 *const chip8, OpCodeArgs args) {
-  // TODO broke
   const uint8_t xArg = (args & 0x0F00) >> 8;
   const uint8_t yArg = (args & 0x00F0) >> 4;
   uint8_t x = (chip8->registers.at(xArg)) % Chip8::DISPLAY_WIDTH;
@@ -80,66 +79,21 @@ void Instructions::display(Chip8 *const chip8, OpCodeArgs args) {
   const size_t byteSize =
       std::min(Chip8::DISPLAY_HEIGHT, static_cast<size_t>(N));
 
-  // for each byte of sprite data (up to N)
-  // - draw the line at x, y
-  //     + for each bit in the byte
-  //     + do the xor math
-  //     + temp x++
-  // - y++
-
-  // for each byte of sprite data (up to N)
   for (uint8_t i = 0; i < byteSize; i++) {
     const uint8_t spriteByte = static_cast<uint8_t>(chip8->memory.at(I + i));
-    // - draw the line at x, y
-    //     + for each bit in the byte
     auto tempX = x;
     for (uint8_t j = 0; j < 8; j++) {
-      //     + do the xor math
       const bool spriteBit = bitFromByte(7 - j, spriteByte);
       const auto oldBit = displayAt(chip8, tempX, y);
       displayAt(chip8, tempX, y) = displayAt(chip8, tempX, y) ^ spriteBit;
-      if (oldBit && !displayAt(chip8, tempX, y)) { // if bit was unset
+      // if bit was unset, detect the collision
+      if (oldBit && !displayAt(chip8, tempX, y)) {
         VF(chip8) = 1;
       }
       tempX++;
-
-      // if (spriteBit == 0) {
-      //   tempX++;
-      //   continue;
-      // }
-      // if (spriteBit == displayAt(chip8, x, y)) {
-      //   displayAt(chip8, tempX, y) = 0;
-      //   VF(chip8) = 1;
-      // } else {
-      //   displayAt(chip8, tempX, y) = 1;
-      // }
-      //     + temp x++
     }
     y++;
   }
-
-  //   for (uint8_t i = 0; i < byteSize; i++) { // row
-  //     const uint8_t nthSpriteData = static_cast<uint8_t>(chip8->memory.at(I +
-  //     i));
-  //
-  //     for (uint8_t j = 0; j < 8; j++) {
-  //       for (size_t k = 0; k < 8; k++) {
-  //         const auto spriteBit = bitFromByte(k, nthSpriteData);
-  //         if (spriteBit == 0) {
-  //           continue;
-  //         }
-  //         if (spriteBit == displayAt(chip8, x, y)) {
-  //           displayAt(chip8, x, y) = 0;
-  //           VF(chip8) = 1;
-  //         } else {
-  //           displayAt(chip8, x, y) = 1;
-  //         }
-  //       }
-  //       x++;
-  //     }
-  //     y++;
-  //   }
-
   chip8->interface.callDisplayHook(chip8);
 }
 
