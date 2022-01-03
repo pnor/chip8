@@ -9,7 +9,7 @@ int main() {
                                   [](chip8::Chip8 *) {});
   chip8::Chip8 chip8 = chip8::Chip8(interface);
 
-  auto res = chip8.loadRom("files/roms/IBM Logo.ch8");
+  auto res = chip8.loadRom("files/roms/bc_test.ch8");
   if (res) {
     chip8.run();
   } else {
