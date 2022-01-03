@@ -127,7 +127,7 @@ void Chip8::decodeAndExecute(Instruction instruction) {
 }
 
 void Chip8::run() {
-  auto maxFetch = 100;
+  auto maxFetch = 1000;
   auto curFetch = 0;
   while (curFetch++ < maxFetch) {
     Instruction instruction = fetch();
