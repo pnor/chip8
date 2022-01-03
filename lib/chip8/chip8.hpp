@@ -4,6 +4,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <filesystem>
 #include <vector>
 
 #include "chip8_interface.hpp"
@@ -27,7 +28,9 @@ private:
   /** 64 x 32 monochrome pixels */
   constexpr static size_t DISPLAY_WIDTH = 64;
   constexpr static size_t DISPLAY_HEIGHT = 32;
-  std::array<std::array<bool, DISPLAY_HEIGHT>, DISPLAY_WIDTH> display;
+  /** Array of rows of the display, where first index is row, second column */
+  std::array<std::array<bool, Chip8::DISPLAY_WIDTH>, Chip8::DISPLAY_HEIGHT>
+      display;
 
   /** Program Counter */
   std::size_t PC;
@@ -75,7 +78,7 @@ public:
   // Running Chip8 System
   //
   /** Load ROM into memory */
-  void loadRom();
+  bool loadRom(std::filesystem::path path);
   /** Run loaded ROM, starting the fetch/decode/execute loop */
   void run();
 
@@ -83,7 +86,8 @@ public:
   // Getting State of the System
   //
   std::array<std::byte, 4 * KILOBYTE> dumpMemory();
-  const std::array<std::array<bool, DISPLAY_HEIGHT>, DISPLAY_WIDTH> &
+  const std::array<std::array<bool, Chip8::DISPLAY_WIDTH>,
+                   Chip8::DISPLAY_HEIGHT> &
   getDisplay();
 };
 

@@ -80,7 +80,9 @@ void Instructions::display(Chip8 *const chip8, OpCodeArgs args) {
        i < std::min(Chip8::DISPLAY_HEIGHT, static_cast<size_t>(N));
        i++) { // row
     const uint8_t nthSpriteData = static_cast<uint8_t>(chip8->memory.at(I + N));
-    for (uint8_t j = 0; j < Chip8::DISPLAY_WIDTH / 8; j++) { // col
+    for (uint8_t j = 0;
+         j < Chip8::DISPLAY_WIDTH / 8 && x < Chip8::DISPLAY_WIDTH; j++) { // col
+      std::cout << "x: " << (int)x << ", y: " << (int)y << std::endl;
 
       // loop through each pixel in the byte
       for (size_t k = 0; k < 8; k++) {
@@ -89,10 +91,10 @@ void Instructions::display(Chip8 *const chip8, OpCodeArgs args) {
           continue;
         }
 
-        if (spriteBit == displayAt(chip8, y, x)) {
+        if (spriteBit == displayAt(chip8, x, y)) {
           VF(chip8) = 1;
         } else {
-          displayAt(chip8, y, x) = 1;
+          displayAt(chip8, x, y) = 1; // TODO flip x and y ?
         }
       }
       x++;

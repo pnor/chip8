@@ -14,8 +14,8 @@ private:
     return chip8->registers[0xF];
   }
 
-  static constexpr bool &displayAt(Chip8 *const chip8, const size_t row,
-                                   const size_t col) {
+  static constexpr bool &displayAt(Chip8 *const chip8, const size_t col,
+                                   const size_t row) {
     return chip8->display.at(row).at(col);
   }
 

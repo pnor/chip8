@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cstring>
+#include <fstream>
 #include <iostream>
 
 #include "font.hpp"
@@ -17,6 +18,7 @@ using std::uint16_t;
 #define UNKNOWN_OP_CODE throw std::invalid_argument("unknown op code")
 
 constexpr std::uint8_t lastNibble(OpCodeArgs args) { return args & 0x000F; }
+constexpr size_t ROM_START_ADDRESS = 0x200;
 
 //
 // ===== Setting Up =========================
@@ -37,6 +39,13 @@ Chip8::Chip8(Chip8Interface interface) : interface(interface) {
     std::fill(display[i].begin(), display[i].end(), false);
   }
 
+  PC = ROM_START_ADDRESS;
+  I = 0;
+  delayTimer = 0;
+  soundTimer = 0;
+
+  std::fill(registers.begin(), registers.end(), 0);
+
   setupFonts();
 }
 
@@ -44,10 +53,20 @@ Chip8::Chip8(Chip8Interface interface) : interface(interface) {
 // ===== Running Chip8 System =========================
 //
 
-void Chip8::loadRom() {
-  // TODO
-  // "expect a CHIP-8 programto be loaded into memory at address 0x200 (512 in
-  // decimal)"
+bool Chip8::loadRom(std::filesystem::path path) {
+  std::ifstream file(path, std::ios::binary);
+  std::byte *memPtr = memory.begin() + ROM_START_ADDRESS;
+
+  char romByte;
+  file.read(&romByte, 1);
+
+  while (file.good() && memPtr < memory.end()) {
+    *memPtr = static_cast<std::byte>(romByte);
+    memPtr++;
+    file.read(&romByte, 1);
+  }
+
+  return memPtr < memory.end();
 }
 
 Instruction Chip8::fetch() {
@@ -61,6 +80,10 @@ Instruction Chip8::fetch() {
 void Chip8::decodeAndExecute(Instruction instruction) {
   OpCode opCode = (instruction & 0xF000) >> 12;
   OpCodeArgs args = instruction & 0x0FFF;
+
+  std::cout << "PC: " << (int)PC << std::endl;
+  std::cout << "opCode: " << (int)opCode << std::endl;
+
   switch (opCode) {
   case 0x0: {
     auto nibble = lastNibble(args);
@@ -104,12 +127,12 @@ void Chip8::decodeAndExecute(Instruction instruction) {
 }
 
 void Chip8::run() {
-  // TODO
-  // fetch decode exec
-
-  // TODO only do loop based on instructionsPerSecond
-  Instruction instruction = fetch();
-  decodeAndExecute(instruction);
+  auto maxFetch = 100;
+  auto curFetch = 0;
+  while (curFetch++ < maxFetch) {
+    Instruction instruction = fetch();
+    decodeAndExecute(instruction);
+  }
 }
 
 //
@@ -118,7 +141,7 @@ void Chip8::run() {
 
 std::array<std::byte, 4 * KILOBYTE> Chip8::dumpMemory() { return memory; }
 
-const std::array<std::array<bool, Chip8::DISPLAY_HEIGHT>, Chip8::DISPLAY_WIDTH>
+const std::array<std::array<bool, Chip8::DISPLAY_WIDTH>, Chip8::DISPLAY_HEIGHT>
     &Chip8::getDisplay() {
   return display;
 }
