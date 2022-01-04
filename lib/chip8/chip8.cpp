@@ -2,11 +2,11 @@
 
 #include <algorithm>
 #include <cstring>
-#include <fstream>
 #include <iostream>
 
 #include "font.hpp"
 #include "instruction.hpp"
+#include "irom.hpp"
 
 namespace chip8 {
 using std::uint16_t;
@@ -53,17 +53,15 @@ Chip8::Chip8(Chip8Interface interface) : interface(interface) {
 // ===== Running Chip8 System =========================
 //
 
-bool Chip8::loadRom(std::filesystem::path path) {
-  std::ifstream file(path, std::ios::binary);
+bool Chip8::loadRom(std::unique_ptr<IROM> rom) {
   std::byte *memPtr = memory.begin() + ROM_START_ADDRESS;
 
-  char romByte;
-  file.read(&romByte, 1);
-
-  while (file.good() && memPtr < memory.end()) {
-    *memPtr = static_cast<std::byte>(romByte);
+  while (!rom->done()) {
+    Instruction instruction = rom->next();
+    *memPtr = static_cast<std::byte>(instruction >> 8);
     memPtr++;
-    file.read(&romByte, 1);
+    *memPtr = static_cast<std::byte>(instruction & 0x00FF);
+    memPtr++;
   }
 
   return memPtr < memory.end();
@@ -80,6 +78,9 @@ Instruction Chip8::fetch() {
 void Chip8::decodeAndExecute(Instruction instruction) {
   OpCode opCode = (instruction & 0xF000) >> 12;
   OpCodeArgs args = instruction & 0x0FFF;
+
+  // make sure args never has bits sent in first 4 bits
+  assert((args & 0xF000) >> 12 == 0);
 
   switch (opCode) {
   case 0x0: {
@@ -101,12 +102,28 @@ void Chip8::decodeAndExecute(Instruction instruction) {
     Instructions::pushSubroutine(this, args);
     break;
   }
+  case 0x3: {
+    Instructions::skipIfEqualImmediate(this, args);
+    break;
+  }
+  case 0x4: {
+    Instructions::skipIfNotEqualImmediate(this, args);
+    break;
+  }
+  case 0x5: {
+    Instructions::skipIfRegistersEqual(this, args);
+    break;
+  }
   case 0x6: {
     Instructions::setRegister(this, args);
     break;
   }
   case 0x7: {
     Instructions::addValueToRegister(this, args);
+    break;
+  }
+  case 0x9: {
+    Instructions::skipIfRegistersNotEqual(this, args);
     break;
   }
   case 0xA: {
@@ -123,10 +140,14 @@ void Chip8::decodeAndExecute(Instruction instruction) {
   }
 }
 
+void Chip8::cycle() {
+  Instruction instruction = fetch();
+  decodeAndExecute(instruction);
+}
+
 void Chip8::run() {
   while (true) {
-    Instruction instruction = fetch();
-    decodeAndExecute(instruction);
+    cycle();
   }
 }
 
@@ -134,11 +155,21 @@ void Chip8::run() {
 // ===== State of the System =========================
 //
 
-std::array<std::byte, 4 * KILOBYTE> Chip8::dumpMemory() { return memory; }
+std::array<std::byte, 4 * KILOBYTE> Chip8::getMemory() const { return memory; }
 
 const std::array<std::array<bool, Chip8::DISPLAY_WIDTH>, Chip8::DISPLAY_HEIGHT>
-    &Chip8::getDisplay() {
+    &Chip8::getDisplay() const {
   return display;
+}
+
+std::size_t Chip8::getPC() const { return PC; }
+
+std::uint16_t Chip8::getI() const { return I; }
+
+const std::vector<std::uint16_t> &Chip8::getStack() const { return stack; }
+
+std::uint8_t Chip8::valueInRegister(size_t reg) const {
+  return registers.at(reg);
 }
 
 } // namespace chip8

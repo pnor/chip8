@@ -4,7 +4,6 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
-#include <filesystem>
 #include <vector>
 
 #include "chip8_interface.hpp"
@@ -16,8 +15,11 @@ constexpr static size_t KILOBYTE = 1024;
 using Instruction = std::uint16_t;
 /** OP code is first 4 bits, a nibble */
 using OpCode = std::uint8_t;
-/** Remaining 12 bits are arguements for each op code */
+/** Remaining 12 bits are arguements for each op code. The first 4 bits
+ * represneting which op code are always 0 */
 using OpCodeArgs = std::uint16_t;
+
+class IROM;
 
 /** The CHIP-8 system */
 class Chip8 {
@@ -78,17 +80,23 @@ public:
   // Running Chip8 System
   //
   /** Load ROM into memory */
-  bool loadRom(std::filesystem::path path);
-  /** Run loaded ROM, starting the fetch/decode/execute loop */
+  bool loadRom(std::unique_ptr<IROM> rom);
+  /** Perform one fetch/decode/execute cycle */
+  void cycle();
+  /** Run loaded ROM, starting the fetch/decode/execute infinite loop */
   void run();
 
   //
   // Getting State of the System
   //
-  std::array<std::byte, 4 * KILOBYTE> dumpMemory();
+  std::array<std::byte, 4 * KILOBYTE> getMemory() const;
   const std::array<std::array<bool, Chip8::DISPLAY_WIDTH>,
                    Chip8::DISPLAY_HEIGHT> &
-  getDisplay();
+  getDisplay() const;
+  std::size_t getPC() const;
+  std::uint16_t getI() const;
+  const std::vector<std::uint16_t> &getStack() const;
+  std::uint8_t valueInRegister(size_t reg) const;
 };
 
 } // namespace chip8

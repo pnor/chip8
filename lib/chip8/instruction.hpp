@@ -31,6 +31,14 @@ public:
 
   static void popSubroutine(Chip8 *const chip8, OpCodeArgs args);
 
+  static void skipIfEqualImmediate(Chip8 *const chip8, OpCodeArgs args);
+
+  static void skipIfNotEqualImmediate(Chip8 *const chip8, OpCodeArgs args);
+
+  static void skipIfRegistersEqual(Chip8 *const chip8, OpCodeArgs args);
+
+  static void skipIfRegistersNotEqual(Chip8 *const chip8, OpCodeArgs args);
+
   static void setRegister(Chip8 *const chip8, const OpCodeArgs args);
 
   static void addValueToRegister(Chip8 *const chip8, OpCodeArgs args);

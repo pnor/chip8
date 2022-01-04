@@ -50,6 +50,37 @@ void Instructions::popSubroutine(Chip8 *const chip8, OpCodeArgs args) {
   stack.pop_back();
 }
 
+void Instructions::skipIfEqualImmediate(Chip8 *const chip8, OpCodeArgs args) {
+  // TODO test these
+  const uint8_t imm = args & 0x00FF;
+  uint8_t reg = (args & 0x0F00) >> 8;
+  if (chip8->registers.at(reg) == imm) {
+    chip8->PC += 2;
+  }
+}
+
+void Instructions::skipIfNotEqualImmediate(Chip8 *const chip8,
+                                           OpCodeArgs args) {
+  const uint8_t imm = args & 0x00FF;
+  uint8_t reg = (args & 0x0F00) >> 8;
+  if (chip8->registers.at(reg) != imm) {
+    chip8->PC += 2;
+  }
+}
+
+void Instructions::skipIfRegistersEqual(Chip8 *const chip8, OpCodeArgs args) {
+  // TODO
+  std::cout << "unimplemented" << std::endl;
+  exit(1);
+}
+
+void Instructions::skipIfRegistersNotEqual(Chip8 *const chip8,
+                                           OpCodeArgs args) {
+  // TODO
+  std::cout << "unimplemented" << std::endl;
+  exit(1);
+}
+
 void Instructions::setRegister(Chip8 *const chip8, const OpCodeArgs args) {
   uint8_t reg = (args & 0x0F00) >> 8;
   uint8_t value = args & 0x00FF;
