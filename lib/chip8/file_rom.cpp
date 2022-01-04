@@ -1,4 +1,5 @@
 #include "file_rom.hpp"
+#include <iostream>
 
 namespace chip8 {
 
@@ -9,25 +10,15 @@ FileROM::FileROM(std::filesystem::path path) {
 Instruction FileROM::next() {
   Instruction instruction;
 
-  char romByte;
-
-  file.read(&romByte, 1);
-  if (!file.good()) {
-    throw std::runtime_error(
-        "failed to fetch first byte of an instruction from ROM!");
-  }
-  instruction = static_cast<uint8_t>(romByte) << 8;
-
-  file.read(&romByte, 1);
-  if (!file.good()) {
-    throw std::runtime_error(
-        "failed to fetch second byte of an instruction from ROM!");
-  }
-  instruction += static_cast<uint8_t>(romByte);
+  std::array<char, 2> twoRomBytes;
+  std::fill(twoRomBytes.begin(), twoRomBytes.end(), 0);
+  file.read(twoRomBytes.begin(), 2);
+  instruction = twoRomBytes[0] << 8;
+  instruction += 0x00FF & twoRomBytes[1];
 
   return instruction;
 }
 
-bool FileROM::done() const { return file.good(); }
+bool FileROM::done() const { return file.eof(); }
 
 } // namespace chip8
