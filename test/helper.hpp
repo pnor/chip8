@@ -35,4 +35,10 @@ Chip8 chip8AfterRunning(array<Instruction, N> instructions) {
   return chip8;
 }
 
+template <size_t N> void doNcycles(Chip8 &chip8) {
+  for (size_t i = 0; i < N; i++) {
+    chip8.cycle();
+  }
+}
+
 #endif // HELPER_H_

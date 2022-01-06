@@ -13,9 +13,10 @@ add_executable(
   chip8_tests.cpp
   helper.cpp
   helper.hpp
-  instructions/clear_screen_test.cpp
-  instructions/jump_test.cpp
-  instructions/subroutine_test.cpp
+  instructions/clear_screen.cpp
+  instructions/jump.cpp
+  instructions/subroutine.cpp
+  instructions/skip.cpp
 )
 
 target_link_libraries(
