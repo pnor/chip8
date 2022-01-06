@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cstring>
 #include <iostream>
+#include <string>
 
 #include "font.hpp"
 #include "instruction.hpp"
@@ -15,10 +16,23 @@ using std::uint16_t;
 // ===== Helper =========================
 //
 
-#define UNKNOWN_OP_CODE throw std::invalid_argument("unknown op code")
+// #define UNKNOWN_OP_CODE throw std::invalid_argument("unknown op code")
 
-constexpr std::uint8_t lastNibble(OpCodeArgs args) { return args & 0x000F; }
-constexpr size_t ROM_START_ADDRESS = 0x200;
+static void unknownOpCode(OpCode code, OpCodeArgs args) {
+  uint16_t instruction = (code << 12) + args;
+  char buf[4];
+  std::memset(buf, 0, sizeof(char) * 4);
+  std::sprintf(buf, "%X", instruction);
+  std::string opCodeString(buf);
+  throw std::invalid_argument("unknown op code: " + opCodeString);
+}
+
+static constexpr std::uint8_t lastNibble(OpCodeArgs args) {
+  return args & 0x000F;
+}
+static constexpr size_t ROM_START_ADDRESS = 0x200;
+
+static constexpr size_t INSTRUCTION_BYTE_SIZE = 2;
 
 //
 // ===== Setting Up =========================
@@ -32,22 +46,7 @@ void Chip8::setupFonts() {
   }
 }
 
-Chip8::Chip8(Chip8Interface interface) : interface(interface) {
-  std::fill(this->memory.begin(), this->memory.end(), std::byte(0));
-
-  for (size_t i = 0; i < display.size(); i++) {
-    std::fill(display[i].begin(), display[i].end(), false);
-  }
-
-  PC = ROM_START_ADDRESS;
-  I = 0;
-  delayTimer = 0;
-  soundTimer = 0;
-
-  std::fill(registers.begin(), registers.end(), 0);
-
-  setupFonts();
-}
+Chip8::Chip8(Chip8Interface interface) : interface(interface) { reset(); }
 
 //
 // ===== Running Chip8 System =========================
@@ -71,7 +70,7 @@ Instruction Chip8::fetch() {
   uint16_t instruction = static_cast<uint16_t>(memory[PC]);
   instruction <<= 8;
   instruction += static_cast<uint16_t>(memory[PC + 1]);
-  PC += 2;
+  PC += INSTRUCTION_BYTE_SIZE;
   return instruction;
 }
 
@@ -90,7 +89,7 @@ void Chip8::decodeAndExecute(Instruction instruction) {
     } else if (nibble == 0xE) {
       Instructions::popSubroutine(this, args);
     } else {
-      UNKNOWN_OP_CODE;
+      unknownOpCode(opCode, args);
     }
     break;
   }
@@ -135,7 +134,7 @@ void Chip8::decodeAndExecute(Instruction instruction) {
     break;
   }
   default: {
-    UNKNOWN_OP_CODE;
+    unknownOpCode(opCode, args);
   }
   }
 }
@@ -149,6 +148,23 @@ void Chip8::run() {
   while (true) {
     cycle();
   }
+}
+
+void Chip8::reset() {
+  std::fill(this->memory.begin(), this->memory.end(), std::byte(0));
+
+  for (size_t i = 0; i < display.size(); i++) {
+    std::fill(display[i].begin(), display[i].end(), false);
+  }
+
+  PC = ROM_START_ADDRESS;
+  I = 0;
+  delayTimer = 0;
+  soundTimer = 0;
+
+  std::fill(registers.begin(), registers.end(), 0);
+
+  setupFonts();
 }
 
 //
@@ -166,7 +182,9 @@ std::size_t Chip8::getPC() const { return PC; }
 
 std::uint16_t Chip8::getI() const { return I; }
 
-const std::vector<std::uint16_t> &Chip8::getStack() const { return stack; }
+std::optional<std::uint16_t> Chip8::peekStack() const {
+  return stack.empty() ? std::nullopt : std::make_optional(stack.back());
+}
 
 std::uint8_t Chip8::valueInRegister(size_t reg) const {
   return registers.at(reg);

@@ -4,6 +4,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 #include <vector>
 
 #include "chip8_interface.hpp"
@@ -85,6 +86,9 @@ public:
   void cycle();
   /** Run loaded ROM, starting the fetch/decode/execute infinite loop */
   void run();
+  /** Resets chip8 to a state before any CPU cycles were performed and ROMS
+   * loaded */
+  void reset();
 
   //
   // Getting State of the System
@@ -95,7 +99,7 @@ public:
   getDisplay() const;
   std::size_t getPC() const;
   std::uint16_t getI() const;
-  const std::vector<std::uint16_t> &getStack() const;
+  std::optional<std::uint16_t> peekStack() const;
   std::uint8_t valueInRegister(size_t reg) const;
 };
 

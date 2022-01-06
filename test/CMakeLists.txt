@@ -11,7 +11,11 @@ FetchContent_MakeAvailable(googletest)
 add_executable(
   emacs_chip8_test
   chip8_tests.cpp
-  instruction_tests.cpp
+  helper.cpp
+  helper.hpp
+  instructions/clear_screen_test.cpp
+  instructions/jump_test.cpp
+  instructions/subroutine_test.cpp
 )
 
 target_link_libraries(

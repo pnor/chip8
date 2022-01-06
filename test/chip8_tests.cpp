@@ -2,18 +2,12 @@
 #include <iostream>
 
 #include "chip8.hpp"
+#include "helper.hpp"
 
 // Demonstrate some basic assertions.
 using std::byte;
 
-TEST(HelloTest, BasicAssertions) {
-  // Expect two strings not to be equal.
-  EXPECT_STRNE("hello", "world");
-  // Expect equality.
-  EXPECT_EQ(7 * 6, 42);
-}
-
-TEST(Chip8InitTest, FontInit) {
+TEST(Chip8SystemTests, FontInit) {
   auto interface =
       chip8::Chip8Interface([](chip8::Chip8 *) {}, [](chip8::Chip8 *) {});
   auto chip8 = chip8::Chip8(interface);
@@ -114,4 +108,11 @@ TEST(Chip8InitTest, FontInit) {
   EXPECT_EQ(memory[0x9B + 2], byte(0xF0));
   EXPECT_EQ(memory[0x9B + 3], byte(0x80));
   EXPECT_EQ(memory[0x9B + 4], byte(0x80));
+}
+
+TEST(Chip8SystemTests, Reset) {
+  auto interface =
+      chip8::Chip8Interface([](chip8::Chip8 *) {}, [](chip8::Chip8 *) {});
+  auto chip8 = chip8::Chip8(interface);
+  // TODO
 }
