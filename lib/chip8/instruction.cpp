@@ -117,6 +117,10 @@ void Instructions::display(Chip8 *const chip8, OpCodeArgs args) {
     const uint8_t spriteByte = static_cast<uint8_t>(chip8->memory.at(I + i));
     auto tempX = x;
     for (uint8_t j = 0; j < 8; j++) {
+      if (tempX >= DISPLAY_WIDTH) {
+        break;
+      }
+
       const bool spriteBit = bitFromByte(7 - j, spriteByte);
       const auto oldBit = displayAt(chip8, tempX, y);
       displayAt(chip8, tempX, y) = displayAt(chip8, tempX, y) ^ spriteBit;
@@ -127,6 +131,9 @@ void Instructions::display(Chip8 *const chip8, OpCodeArgs args) {
       tempX++;
     }
     y++;
+    if (y >= DISPLAY_HEIGHT) {
+      break;
+    }
   }
   chip8->interface.callDisplayHook(chip8);
 }
