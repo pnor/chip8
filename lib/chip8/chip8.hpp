@@ -73,6 +73,7 @@ private:
   void setupFonts();
   Instruction fetch();
   void decodeAndExecute(Instruction instruction);
+  void decodeAndExecuteArithmetic(OpCodeArgs args);
 
 public:
   friend class Instructions;

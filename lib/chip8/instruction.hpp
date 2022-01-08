@@ -20,31 +20,47 @@ private:
   }
 
 public:
+  /** 0NNN */
   static void executeMachineLanguageRoutine(Chip8 *const chip8,
                                             OpCodeArgs args);
 
+  /** 00E0 */
   static void clearScreen(Chip8 *const chip8, OpCodeArgs args);
 
+  /** 1NNN */
   static void jump(Chip8 *const chip8, OpCodeArgs args);
 
+  /** 2NNN */
   static void pushSubroutine(Chip8 *const chip8, OpCodeArgs args);
 
+  /** 00EE */
   static void popSubroutine(Chip8 *const chip8, OpCodeArgs args);
 
+  /** 3XNN */
   static void skipIfEqualImmediate(Chip8 *const chip8, OpCodeArgs args);
 
+  /** 4XNN */
   static void skipIfNotEqualImmediate(Chip8 *const chip8, OpCodeArgs args);
 
+  /** 5XY0 */
   static void skipIfRegistersEqual(Chip8 *const chip8, OpCodeArgs args);
 
+  /** 9XY0 */
   static void skipIfRegistersNotEqual(Chip8 *const chip8, OpCodeArgs args);
 
+  /** 6XNN */
   static void setRegister(Chip8 *const chip8, const OpCodeArgs args);
 
+  /** 7XNN */
   static void addValueToRegister(Chip8 *const chip8, OpCodeArgs args);
 
+  /** 8XY0 */
+  static void setRegisterXToY(Chip8 *const chip8, OpCodeArgs args);
+
+  /** ANNN */
   static void setIndexRegisterI(Chip8 *const chip8, OpCodeArgs args);
 
+  /** DXYN */
   static void display(Chip8 *const chip8, OpCodeArgs args);
 };
 

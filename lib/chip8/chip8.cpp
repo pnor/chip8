@@ -69,6 +69,20 @@ Instruction Chip8::fetch() {
   return instruction;
 }
 
+void Chip8::decodeAndExecuteArithmetic(OpCodeArgs args) {
+  auto nibble = lastNibble(args);
+
+  switch (nibble) {
+  case 0x0: {
+    Instructions::setRegisterXToY(this, args);
+    break;
+  }
+  default: {
+    unknownOpCode(8, args);
+  }
+  }
+}
+
 void Chip8::decodeAndExecute(Instruction instruction) {
   OpCode opCode = (instruction & 0xF000) >> 12;
   OpCodeArgs args = instruction & 0x0FFF;
@@ -114,6 +128,10 @@ void Chip8::decodeAndExecute(Instruction instruction) {
   }
   case 0x7: {
     Instructions::addValueToRegister(this, args);
+    break;
+  }
+  case 0x8: {
+    decodeAndExecuteArithmetic(args);
     break;
   }
   case 0x9: {

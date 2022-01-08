@@ -21,6 +21,7 @@ add_executable(
   instructions/add.cpp
   instructions/set_index_register.cpp
   instructions/display.cpp
+  instructions/set_register_x_to_y.cpp
 )
 
 target_link_libraries(

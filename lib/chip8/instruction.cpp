@@ -51,7 +51,6 @@ void Instructions::popSubroutine(Chip8 *const chip8, OpCodeArgs args) {
 }
 
 void Instructions::skipIfEqualImmediate(Chip8 *const chip8, OpCodeArgs args) {
-  // TODO test these
   const uint8_t imm = args & 0x00FF;
   uint8_t reg = (args & 0x0F00) >> 8;
   if (chip8->registers.at(reg) == imm) {
@@ -95,6 +94,12 @@ void Instructions::addValueToRegister(Chip8 *const chip8, OpCodeArgs args) {
   uint8_t reg = (args & 0x0F00) >> 8;
   uint8_t value = args & 0x00FF;
   chip8->registers.at(reg) += value;
+}
+
+void Instructions::setRegisterXToY(Chip8 *const chip8, OpCodeArgs args) {
+  const uint8_t regX = (args & 0x0F00) >> 8;
+  const uint8_t regY = (args & 0x00F0) >> 4;
+  chip8->registers.at(regX) = chip8->registers.at(regY);
 }
 
 void Instructions::setIndexRegisterI(Chip8 *const chip8, OpCodeArgs args) {
