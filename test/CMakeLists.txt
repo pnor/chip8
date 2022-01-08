@@ -17,6 +17,10 @@ add_executable(
   instructions/jump.cpp
   instructions/subroutine.cpp
   instructions/skip.cpp
+  instructions/set.cpp
+  instructions/add.cpp
+  instructions/set_index_register.cpp
+  instructions/display.cpp
 )
 
 target_link_libraries(

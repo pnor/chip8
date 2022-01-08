@@ -16,8 +16,6 @@ using std::uint16_t;
 // ===== Helper =========================
 //
 
-// #define UNKNOWN_OP_CODE throw std::invalid_argument("unknown op code")
-
 static void unknownOpCode(OpCode code, OpCodeArgs args) {
   uint16_t instruction = (code << 12) + args;
   char buf[4];
@@ -30,9 +28,6 @@ static void unknownOpCode(OpCode code, OpCodeArgs args) {
 static constexpr std::uint8_t lastNibble(OpCodeArgs args) {
   return args & 0x000F;
 }
-static constexpr size_t ROM_START_ADDRESS = 0x200;
-
-static constexpr size_t INSTRUCTION_BYTE_SIZE = 2;
 
 //
 // ===== Setting Up =========================
@@ -173,8 +168,8 @@ void Chip8::reset() {
 
 std::array<std::byte, 4 * KILOBYTE> Chip8::getMemory() const { return memory; }
 
-const std::array<std::array<bool, Chip8::DISPLAY_WIDTH>, Chip8::DISPLAY_HEIGHT>
-    &Chip8::getDisplay() const {
+const std::array<std::array<bool, DISPLAY_WIDTH>, DISPLAY_HEIGHT> &
+Chip8::getDisplay() const {
   return display;
 }
 
@@ -186,8 +181,6 @@ std::optional<std::uint16_t> Chip8::peekStack() const {
   return stack.empty() ? std::nullopt : std::make_optional(stack.back());
 }
 
-std::uint8_t Chip8::valueInRegister(size_t reg) const {
-  return registers.at(reg);
-}
+std::uint8_t Chip8::getRegister(size_t reg) const { return registers.at(reg); }
 
 } // namespace chip8

@@ -19,6 +19,15 @@ using OpCode = std::uint8_t;
 /** Remaining 12 bits are arguements for each op code. The first 4 bits
  * represneting which op code are always 0 */
 using OpCodeArgs = std::uint16_t;
+/** Address of the first instruction of the ROM */
+constexpr size_t ROM_START_ADDRESS = 0x200;
+/** Number of bytes 1 instruction takes */
+constexpr size_t INSTRUCTION_BYTE_SIZE = 2;
+
+/** Width of Chip8 Display */
+constexpr size_t DISPLAY_WIDTH = 64;
+/** Height of Chip8 Display */
+constexpr size_t DISPLAY_HEIGHT = 32;
 
 class IROM;
 
@@ -28,12 +37,8 @@ private:
   /** 4 kilobytes of RAM */
   std::array<std::byte, KILOBYTE * 4> memory;
 
-  /** 64 x 32 monochrome pixels */
-  constexpr static size_t DISPLAY_WIDTH = 64;
-  constexpr static size_t DISPLAY_HEIGHT = 32;
   /** Array of rows of the display, where first index is row, second column */
-  std::array<std::array<bool, Chip8::DISPLAY_WIDTH>, Chip8::DISPLAY_HEIGHT>
-      display;
+  std::array<std::array<bool, DISPLAY_WIDTH>, DISPLAY_HEIGHT> display;
 
   /** Program Counter */
   std::size_t PC;
@@ -94,13 +99,12 @@ public:
   // Getting State of the System
   //
   std::array<std::byte, 4 * KILOBYTE> getMemory() const;
-  const std::array<std::array<bool, Chip8::DISPLAY_WIDTH>,
-                   Chip8::DISPLAY_HEIGHT> &
+  const std::array<std::array<bool, DISPLAY_WIDTH>, DISPLAY_HEIGHT> &
   getDisplay() const;
   std::size_t getPC() const;
   std::uint16_t getI() const;
   std::optional<std::uint16_t> peekStack() const;
-  std::uint8_t valueInRegister(size_t reg) const;
+  std::uint8_t getRegister(size_t reg) const;
 };
 
 } // namespace chip8

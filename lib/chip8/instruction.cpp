@@ -55,7 +55,7 @@ void Instructions::skipIfEqualImmediate(Chip8 *const chip8, OpCodeArgs args) {
   const uint8_t imm = args & 0x00FF;
   uint8_t reg = (args & 0x0F00) >> 8;
   if (chip8->registers.at(reg) == imm) {
-    chip8->PC += 2;
+    chip8->PC += INSTRUCTION_BYTE_SIZE;
   }
 }
 
@@ -64,21 +64,25 @@ void Instructions::skipIfNotEqualImmediate(Chip8 *const chip8,
   const uint8_t imm = args & 0x00FF;
   uint8_t reg = (args & 0x0F00) >> 8;
   if (chip8->registers.at(reg) != imm) {
-    chip8->PC += 2;
+    chip8->PC += INSTRUCTION_BYTE_SIZE;
   }
 }
 
 void Instructions::skipIfRegistersEqual(Chip8 *const chip8, OpCodeArgs args) {
-  // TODO
-  std::cout << "unimplemented" << std::endl;
-  exit(1);
+  const uint8_t regX = (args & 0x0F00) >> 8;
+  const uint8_t regY = (args & 0x00F0) >> 4;
+  if (chip8->registers.at(regX) == chip8->registers.at(regY)) {
+    chip8->PC += INSTRUCTION_BYTE_SIZE;
+  }
 }
 
 void Instructions::skipIfRegistersNotEqual(Chip8 *const chip8,
                                            OpCodeArgs args) {
-  // TODO
-  std::cout << "unimplemented" << std::endl;
-  exit(1);
+  const uint8_t regX = (args & 0x0F00) >> 8;
+  const uint8_t regY = (args & 0x00F0) >> 4;
+  if (chip8->registers.at(regX) != chip8->registers.at(regY)) {
+    chip8->PC += INSTRUCTION_BYTE_SIZE;
+  }
 }
 
 void Instructions::setRegister(Chip8 *const chip8, const OpCodeArgs args) {
@@ -100,15 +104,14 @@ void Instructions::setIndexRegisterI(Chip8 *const chip8, OpCodeArgs args) {
 void Instructions::display(Chip8 *const chip8, OpCodeArgs args) {
   const uint8_t xArg = (args & 0x0F00) >> 8;
   const uint8_t yArg = (args & 0x00F0) >> 4;
-  uint8_t x = (chip8->registers.at(xArg)) % Chip8::DISPLAY_WIDTH;
-  uint8_t y = (chip8->registers.at(yArg)) % Chip8::DISPLAY_HEIGHT;
+  uint8_t x = (chip8->registers.at(xArg)) % DISPLAY_WIDTH;
+  uint8_t y = (chip8->registers.at(yArg)) % DISPLAY_HEIGHT;
   VF(chip8) = 0;
 
   const auto &I = chip8->I;
 
   const uint8_t N = args & 0x000F;
-  const size_t byteSize =
-      std::min(Chip8::DISPLAY_HEIGHT, static_cast<size_t>(N));
+  const size_t byteSize = std::min(DISPLAY_HEIGHT, static_cast<size_t>(N));
 
   for (uint8_t i = 0; i < byteSize; i++) {
     const uint8_t spriteByte = static_cast<uint8_t>(chip8->memory.at(I + i));
