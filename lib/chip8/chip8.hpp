@@ -7,6 +7,7 @@
 #include <optional>
 #include <vector>
 
+#include "chip8_config.hpp"
 #include "chip8_interface.hpp"
 
 namespace chip8 {
@@ -75,11 +76,22 @@ private:
   void decodeAndExecute(Instruction instruction);
   void decodeAndExecuteArithmetic(OpCodeArgs args);
 
+  //
+  // Convenience Functions
+  //
+  constexpr std::uint8_t &VF() { return registers[0xF]; }
+
+  constexpr bool &displayAt(const size_t col, const size_t row) {
+    return display.at(row).at(col);
+  }
+
 public:
   friend class Instructions;
 
   /** Number of CHIP-8 instructions emulated per second */
   size_t instructionsPerSecond = 700;
+  /** Configuration of the system */
+  Chip8Config config();
 
   explicit Chip8(Chip8Interface interface);
 

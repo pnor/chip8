@@ -18,7 +18,7 @@ constexpr size_t INSTRUCTION_BYTE_SIZE = 2;
 
 const std::function<void(chip8::Chip8 *chip8)> NOP_FUNC = [](chip8::Chip8 *) {};
 
-Chip8 initChip8(std::unique_ptr<chip8::IROM> rom);
+Chip8 initChip8(std::optional<std::unique_ptr<chip8::IROM>> rom = std::nullopt);
 
 template <size_t N>
 constexpr unique_ptr<ArrayROM<N>>

@@ -102,6 +102,61 @@ void Instructions::setRegisterXToY(Chip8 *const chip8, OpCodeArgs args) {
   chip8->registers.at(regX) = chip8->registers.at(regY);
 }
 
+void Instructions::binaryOR(Chip8 *const chip8, OpCodeArgs args) {
+  const uint8_t regX = (args & 0x0F00) >> 8;
+  const uint8_t regY = (args & 0x00F0) >> 4;
+  chip8->registers.at(regX) |= chip8->registers.at(regY);
+}
+
+void Instructions::binaryAND(Chip8 *const chip8, OpCodeArgs args) {
+  const uint8_t regX = (args & 0x0F00) >> 8;
+  const uint8_t regY = (args & 0x00F0) >> 4;
+  chip8->registers.at(regX) &= chip8->registers.at(regY);
+}
+
+void Instructions::binaryXOR(Chip8 *const chip8, OpCodeArgs args) {
+  const uint8_t regX = (args & 0x0F00) >> 8;
+  const uint8_t regY = (args & 0x00F0) >> 4;
+  chip8->registers.at(regX) ^= chip8->registers.at(regY);
+}
+
+void Instructions::addRegisters(Chip8 *const chip8, OpCodeArgs args) {
+  const uint8_t regX = (args & 0x0F00) >> 8;
+  const uint8_t regY = (args & 0x00F0) >> 4;
+  const uint16_t xVal = chip8->registers.at(regX);
+  const uint16_t yVal = chip8->registers.at(regY);
+  const uint16_t result = xVal + yVal;
+  if (result > 255) {
+    chip8->registers.at(0xF) = 1;
+    chip8->registers.at(regX) =
+        chip8->registers.at(regX) + chip8->registers.at(regY);
+  } else {
+    chip8->registers.at(regX) = result;
+  }
+}
+
+void Instructions::subtractYFromX(Chip8 *const chip8, OpCodeArgs args) {
+  chip8->registers.at(0xF) = 1;
+  const uint8_t regX = (args & 0x0F00) >> 8;
+  const uint8_t regY = (args & 0x00F0) >> 4;
+  if (chip8->registers.at(regY) > chip8->registers.at(regX)) {
+    chip8->VF() = 0;
+  }
+  chip8->registers.at(regX) =
+      chip8->registers.at(regX) - chip8->registers.at(regY);
+}
+
+void Instructions::subtractXFromY(Chip8 *const chip8, OpCodeArgs args) {
+  chip8->registers.at(0xF) = 1;
+  const uint8_t regX = (args & 0x0F00) >> 8;
+  const uint8_t regY = (args & 0x00F0) >> 4;
+  if (chip8->registers.at(regX) > chip8->registers.at(regY)) {
+    chip8->VF() = 0;
+  }
+  chip8->registers.at(regX) =
+      chip8->registers.at(regY) - chip8->registers.at(regX);
+}
+
 void Instructions::setIndexRegisterI(Chip8 *const chip8, OpCodeArgs args) {
   chip8->I = args;
 }
@@ -111,7 +166,7 @@ void Instructions::display(Chip8 *const chip8, OpCodeArgs args) {
   const uint8_t yArg = (args & 0x00F0) >> 4;
   uint8_t x = (chip8->registers.at(xArg)) % DISPLAY_WIDTH;
   uint8_t y = (chip8->registers.at(yArg)) % DISPLAY_HEIGHT;
-  VF(chip8) = 0;
+  chip8->VF() = 0;
 
   const auto &I = chip8->I;
 
@@ -127,11 +182,11 @@ void Instructions::display(Chip8 *const chip8, OpCodeArgs args) {
       }
 
       const bool spriteBit = bitFromByte(7 - j, spriteByte);
-      const auto oldBit = displayAt(chip8, tempX, y);
-      displayAt(chip8, tempX, y) = displayAt(chip8, tempX, y) ^ spriteBit;
+      const auto oldBit = chip8->displayAt(tempX, y);
+      chip8->displayAt(tempX, y) = chip8->displayAt(tempX, y) ^ spriteBit;
       // if bit was unset, detect the collision
-      if (oldBit && !displayAt(chip8, tempX, y)) {
-        VF(chip8) = 1;
+      if (oldBit && !chip8->displayAt(tempX, y)) {
+        chip8->VF() = 1;
       }
       tempX++;
     }

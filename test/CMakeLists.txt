@@ -13,15 +13,20 @@ add_executable(
   chip8_tests.cpp
   helper.cpp
   helper.hpp
-  instructions/clear_screen.cpp
-  instructions/jump.cpp
-  instructions/subroutine.cpp
-  instructions/skip.cpp
-  instructions/set.cpp
   instructions/add.cpp
-  instructions/set_index_register.cpp
+  instructions/add_registers.cpp
+  instructions/binary_and.cpp
+  instructions/binary_or.cpp
+  instructions/binary_xor.cpp
+  instructions/clear_screen.cpp
   instructions/display.cpp
+  instructions/jump.cpp
+  instructions/set.cpp
+  instructions/set_index_register.cpp
   instructions/set_register_x_to_y.cpp
+  instructions/skip.cpp
+  instructions/subroutine.cpp
+  instructions/subtract.cpp
 )
 
 target_link_libraries(

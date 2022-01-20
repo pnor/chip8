@@ -9,16 +9,6 @@ namespace chip8 {
 
 /** All instructions Chip8 can perform */
 class Instructions {
-private:
-  static constexpr std::uint8_t &VF(Chip8 *const chip8) {
-    return chip8->registers[0xF];
-  }
-
-  static constexpr bool &displayAt(Chip8 *const chip8, const size_t col,
-                                   const size_t row) {
-    return chip8->display.at(row).at(col);
-  }
-
 public:
   /** 0NNN */
   static void executeMachineLanguageRoutine(Chip8 *const chip8,
@@ -56,6 +46,24 @@ public:
 
   /** 8XY0 */
   static void setRegisterXToY(Chip8 *const chip8, OpCodeArgs args);
+
+  /** 8XY1 */
+  static void binaryOR(Chip8 *const chip8, OpCodeArgs args);
+
+  /** 8XY2 */
+  static void binaryAND(Chip8 *const chip8, OpCodeArgs args);
+
+  /** 8XY3 */
+  static void binaryXOR(Chip8 *const chip8, OpCodeArgs args);
+
+  /** 8XY4 */
+  static void addRegisters(Chip8 *const chip8, OpCodeArgs args);
+
+  /** 8XY5 */
+  static void subtractYFromX(Chip8 *const chip8, OpCodeArgs args);
+
+  /** 8XY7 */
+  static void subtractXFromY(Chip8 *const chip8, OpCodeArgs args);
 
   /** ANNN */
   static void setIndexRegisterI(Chip8 *const chip8, OpCodeArgs args);

@@ -77,6 +77,30 @@ void Chip8::decodeAndExecuteArithmetic(OpCodeArgs args) {
     Instructions::setRegisterXToY(this, args);
     break;
   }
+  case 0x1: {
+    Instructions::binaryOR(this, args);
+    break;
+  }
+  case 0x2: {
+    Instructions::binaryAND(this, args);
+    break;
+  }
+  case 0x3: {
+    Instructions::binaryXOR(this, args);
+    break;
+  }
+  case 0x4: {
+    Instructions::addRegisters(this, args);
+    break;
+  }
+  case 0x5: {
+    Instructions::subtractYFromX(this, args);
+    break;
+  }
+  case 0x7: {
+    Instructions::subtractXFromY(this, args);
+    break;
+  }
   default: {
     unknownOpCode(8, args);
   }

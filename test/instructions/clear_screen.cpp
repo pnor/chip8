@@ -1,10 +1,10 @@
-#include <gtest/gtest.h>
-
-#include "../helper.hpp"
-
 /**
  00E0: Clear Screen
  */
+
+#include <gtest/gtest.h>
+
+#include "../helper.hpp"
 
 TEST(ClearScreenBlank, ClearScreen) {
   auto chip8 = chip8AfterRunning<1>({0x00E0});
