@@ -21,13 +21,14 @@ add_executable(
   instructions/clear_screen.cpp
   instructions/display.cpp
   instructions/jump.cpp
+  instructions/jumpWithOffset.cpp
   instructions/set.cpp
   instructions/set_index_register.cpp
   instructions/set_register_x_to_y.cpp
+  instructions/shift.cpp
   instructions/skip.cpp
   instructions/subroutine.cpp
   instructions/subtract.cpp
-  instructions/shift.cpp
 )
 
 target_link_libraries(

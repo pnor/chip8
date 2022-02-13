@@ -74,6 +74,9 @@ public:
   /** ANNN */
   static void setIndexRegisterI(Chip8 *const chip8, OpCodeArgs args);
 
+  /** BNNN */
+  static void jumpWithOffset(Chip8 *const chip8, OpCodeArgs args);
+
   /** DXYN */
   static void display(Chip8 *const chip8, OpCodeArgs args);
 };

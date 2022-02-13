@@ -200,6 +200,17 @@ void Instructions::setIndexRegisterI(Chip8 *const chip8, OpCodeArgs args) {
   chip8->I = args;
 }
 
+void Instructions::jumpWithOffset(Chip8 *const chip8, OpCodeArgs args) {
+  if (chip8->config.jumpWithOffsetUsesV0) {
+    const uint8_t imm = args & 0x0FFF;
+    chip8->PC = imm + chip8->getRegister(0);
+  } else {
+    const size_t imm = args & 0x0FFF;
+    const uint8_t regX = getXFrom0X00(args);
+    chip8->PC = imm + chip8->getRegister(regX);
+  }
+}
+
 void Instructions::display(Chip8 *const chip8, OpCodeArgs args) {
   const uint8_t xArg = getXFrom0X00(args);
   const uint8_t yArg = getYFrom00Y0(args);

@@ -2,9 +2,16 @@
 #define CHIP8_CONFIG_H_
 
 class Chip8Config {
-  // TODO add function to set configs for COSMACVIP, Chip48 and Super-CHIP
 public:
+  /** Defaults to the original COSMAC VIP*/
+  Chip8Config();
+
   bool shiftUsesYRegister = false;
+  bool jumpWithOffsetUsesV0 = false;
+
+  void configureAsCOSMACVIP();
+  void configureAsChip48();
+  void configureAsSuperCHIP();
 };
 
 #endif // CHIP8_CONFIG_H_
