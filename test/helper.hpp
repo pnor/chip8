@@ -40,5 +40,4 @@ template <size_t N> void doNcycles(Chip8 &chip8) {
     chip8.cycle();
   }
 }
-
 #endif // HELPER_H_

@@ -65,10 +65,10 @@ public:
   /** 8XY7 */
   static void subtractXFromY(Chip8 *const chip8, OpCodeArgs args);
 
-  /** 8XY6 Right Shift */
+  /** 8XY6 */
   static void shiftRightOne(Chip8 *const chip8, OpCodeArgs args);
 
-  /** 8XYE Left Shift */
+  /** 8XYE */
   static void shiftLefttOne(Chip8 *const chip8, OpCodeArgs args);
 
   /** ANNN */
@@ -76,6 +76,9 @@ public:
 
   /** BNNN */
   static void jumpWithOffset(Chip8 *const chip8, OpCodeArgs args);
+
+  /** CXNN */
+  static void random(Chip8 *const chip8, OpCodeArgs args);
 
   /** DXYN */
   static void display(Chip8 *const chip8, OpCodeArgs args);

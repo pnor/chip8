@@ -211,6 +211,10 @@ void Instructions::jumpWithOffset(Chip8 *const chip8, OpCodeArgs args) {
   }
 }
 
+void Instructions::random(Chip8 *const chip8, OpCodeArgs args) {
+  chip8->registers.at(0) = 9; // TODO
+}
+
 void Instructions::display(Chip8 *const chip8, OpCodeArgs args) {
   const uint8_t xArg = getXFrom0X00(args);
   const uint8_t yArg = getYFrom00Y0(args);

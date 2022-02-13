@@ -179,6 +179,10 @@ void Chip8::decodeAndExecute(Instruction instruction) {
     Instructions::jumpWithOffset(this, args);
     break;
   }
+  case 0xC: {
+    Instructions::random(this, args);
+    break;
+  }
   case 0xD: {
     Instructions::display(this, args);
     break;

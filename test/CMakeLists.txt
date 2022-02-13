@@ -22,6 +22,7 @@ add_executable(
   instructions/display.cpp
   instructions/jump.cpp
   instructions/jumpWithOffset.cpp
+  instructions/random.cpp
   instructions/set.cpp
   instructions/set_index_register.cpp
   instructions/set_register_x_to_y.cpp
