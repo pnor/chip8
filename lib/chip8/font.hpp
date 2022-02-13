@@ -10,7 +10,7 @@ constexpr size_t NUM_FONTS = 16;
 
 /** Write `font` to memory starting at `memPtr` */
 constexpr void writeFontToMemory(std::byte *memPtr, const FontData font) {
-  for (int i = 0; i < FONT_BYTE_LENGTH; i++) {
+  for (size_t i = 0; i < FONT_BYTE_LENGTH; i++) {
     memPtr[i] = font[i];
   }
 }

@@ -2,6 +2,7 @@
 #define CHIP8_CONFIG_H_
 
 class Chip8Config {
+  // TODO add function to set configs for COSMACVIP, Chip48 and Super-CHIP
 public:
   bool shiftUsesYRegister = false;
 };

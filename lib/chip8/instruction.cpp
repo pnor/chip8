@@ -18,6 +18,10 @@ constexpr bool bitFromByte(size_t bitNumber, std::uint8_t byte) {
   return (byte >> bitNumber) & 0x01;
 }
 
+constexpr uint8_t getXFrom0X00(OpCodeArgs args) { return (args & 0x0F00) >> 8; }
+
+constexpr uint8_t getYFrom00Y0(OpCodeArgs args) { return (args & 0x00F0) >> 4; }
+
 //
 // ===== Instruction ===============
 //
@@ -52,7 +56,7 @@ void Instructions::popSubroutine(Chip8 *const chip8, OpCodeArgs args) {
 
 void Instructions::skipIfEqualImmediate(Chip8 *const chip8, OpCodeArgs args) {
   const uint8_t imm = args & 0x00FF;
-  uint8_t reg = (args & 0x0F00) >> 8;
+  uint8_t reg = getXFrom0X00(args);
   if (chip8->registers.at(reg) == imm) {
     chip8->PC += INSTRUCTION_BYTE_SIZE;
   }
@@ -61,15 +65,15 @@ void Instructions::skipIfEqualImmediate(Chip8 *const chip8, OpCodeArgs args) {
 void Instructions::skipIfNotEqualImmediate(Chip8 *const chip8,
                                            OpCodeArgs args) {
   const uint8_t imm = args & 0x00FF;
-  uint8_t reg = (args & 0x0F00) >> 8;
+  uint8_t reg = getXFrom0X00(args);
   if (chip8->registers.at(reg) != imm) {
     chip8->PC += INSTRUCTION_BYTE_SIZE;
   }
 }
 
 void Instructions::skipIfRegistersEqual(Chip8 *const chip8, OpCodeArgs args) {
-  const uint8_t regX = (args & 0x0F00) >> 8;
-  const uint8_t regY = (args & 0x00F0) >> 4;
+  const uint8_t regX = getXFrom0X00(args);
+  const uint8_t regY = getYFrom00Y0(args);
   if (chip8->registers.at(regX) == chip8->registers.at(regY)) {
     chip8->PC += INSTRUCTION_BYTE_SIZE;
   }
@@ -77,52 +81,52 @@ void Instructions::skipIfRegistersEqual(Chip8 *const chip8, OpCodeArgs args) {
 
 void Instructions::skipIfRegistersNotEqual(Chip8 *const chip8,
                                            OpCodeArgs args) {
-  const uint8_t regX = (args & 0x0F00) >> 8;
-  const uint8_t regY = (args & 0x00F0) >> 4;
+  const uint8_t regX = getXFrom0X00(args);
+  const uint8_t regY = getYFrom00Y0(args);
   if (chip8->registers.at(regX) != chip8->registers.at(regY)) {
     chip8->PC += INSTRUCTION_BYTE_SIZE;
   }
 }
 
 void Instructions::setRegister(Chip8 *const chip8, const OpCodeArgs args) {
-  uint8_t reg = (args & 0x0F00) >> 8;
+  uint8_t reg = getXFrom0X00(args);
   uint8_t value = args & 0x00FF;
   chip8->registers.at(reg) += value;
 }
 
 void Instructions::addValueToRegister(Chip8 *const chip8, OpCodeArgs args) {
-  uint8_t reg = (args & 0x0F00) >> 8;
+  uint8_t reg = getXFrom0X00(args);
   uint8_t value = args & 0x00FF;
   chip8->registers.at(reg) += value;
 }
 
 void Instructions::setRegisterXToY(Chip8 *const chip8, OpCodeArgs args) {
-  const uint8_t regX = (args & 0x0F00) >> 8;
-  const uint8_t regY = (args & 0x00F0) >> 4;
+  const uint8_t regX = getXFrom0X00(args);
+  const uint8_t regY = getYFrom00Y0(args);
   chip8->registers.at(regX) = chip8->registers.at(regY);
 }
 
 void Instructions::binaryOR(Chip8 *const chip8, OpCodeArgs args) {
-  const uint8_t regX = (args & 0x0F00) >> 8;
-  const uint8_t regY = (args & 0x00F0) >> 4;
+  const uint8_t regX = getXFrom0X00(args);
+  const uint8_t regY = getYFrom00Y0(args);
   chip8->registers.at(regX) |= chip8->registers.at(regY);
 }
 
 void Instructions::binaryAND(Chip8 *const chip8, OpCodeArgs args) {
-  const uint8_t regX = (args & 0x0F00) >> 8;
-  const uint8_t regY = (args & 0x00F0) >> 4;
+  const uint8_t regX = getXFrom0X00(args);
+  const uint8_t regY = getYFrom00Y0(args);
   chip8->registers.at(regX) &= chip8->registers.at(regY);
 }
 
 void Instructions::binaryXOR(Chip8 *const chip8, OpCodeArgs args) {
-  const uint8_t regX = (args & 0x0F00) >> 8;
-  const uint8_t regY = (args & 0x00F0) >> 4;
+  const uint8_t regX = getXFrom0X00(args);
+  const uint8_t regY = getYFrom00Y0(args);
   chip8->registers.at(regX) ^= chip8->registers.at(regY);
 }
 
 void Instructions::addRegisters(Chip8 *const chip8, OpCodeArgs args) {
-  const uint8_t regX = (args & 0x0F00) >> 8;
-  const uint8_t regY = (args & 0x00F0) >> 4;
+  const uint8_t regX = getXFrom0X00(args);
+  const uint8_t regY = getYFrom00Y0(args);
   const uint16_t xVal = chip8->registers.at(regX);
   const uint16_t yVal = chip8->registers.at(regY);
   const uint16_t result = xVal + yVal;
@@ -137,8 +141,8 @@ void Instructions::addRegisters(Chip8 *const chip8, OpCodeArgs args) {
 
 void Instructions::subtractYFromX(Chip8 *const chip8, OpCodeArgs args) {
   chip8->registers.at(0xF) = 1;
-  const uint8_t regX = (args & 0x0F00) >> 8;
-  const uint8_t regY = (args & 0x00F0) >> 4;
+  const uint8_t regX = getXFrom0X00(args);
+  const uint8_t regY = getYFrom00Y0(args);
   if (chip8->registers.at(regY) > chip8->registers.at(regX)) {
     chip8->VF() = 0;
   }
@@ -148,8 +152,8 @@ void Instructions::subtractYFromX(Chip8 *const chip8, OpCodeArgs args) {
 
 void Instructions::subtractXFromY(Chip8 *const chip8, OpCodeArgs args) {
   chip8->registers.at(0xF) = 1;
-  const uint8_t regX = (args & 0x0F00) >> 8;
-  const uint8_t regY = (args & 0x00F0) >> 4;
+  const uint8_t regX = getXFrom0X00(args);
+  const uint8_t regY = getYFrom00Y0(args);
   if (chip8->registers.at(regX) > chip8->registers.at(regY)) {
     chip8->VF() = 0;
   }
@@ -157,13 +161,48 @@ void Instructions::subtractXFromY(Chip8 *const chip8, OpCodeArgs args) {
       chip8->registers.at(regY) - chip8->registers.at(regX);
 }
 
+void Instructions::shiftRightOne(Chip8 *const chip8, OpCodeArgs args) {
+  if (chip8->config.shiftUsesYRegister) {
+    // Store X in Y and set flag to bit shifted out, then shift
+    const uint8_t regX = getXFrom0X00(args);
+    const uint8_t regY = getYFrom00Y0(args);
+    chip8->registers.at(regY) = chip8->registers.at(regX);
+    auto bitShiftedOut = chip8->registers.at(regX) & 0x01;
+    chip8->VF() = bitShiftedOut;
+    chip8->registers.at(regX) >>= 1;
+  } else {
+    // Shift VX in place
+    const uint8_t regX = getXFrom0X00(args);
+    chip8->registers.at(regX) >>= 1;
+  }
+  // Use Flag and VY register
+
+  // Super8 and chip48 (shift VX in place)
+}
+
+void Instructions::shiftLefttOne(Chip8 *const chip8, OpCodeArgs args) {
+  if (chip8->config.shiftUsesYRegister) {
+    // Store X in Y and set flag to bit shifted out, then shift
+    const uint8_t regX = getXFrom0X00(args);
+    const uint8_t regY = getYFrom00Y0(args);
+    chip8->registers.at(regY) = chip8->registers.at(regX);
+    auto bitShiftedOut = (chip8->registers.at(regX) & 0x80) >> 7;
+    chip8->VF() = bitShiftedOut;
+    chip8->registers.at(regX) <<= 1;
+  } else {
+    // Shift VX in place
+    const uint8_t regX = getXFrom0X00(args);
+    chip8->registers.at(regX) <<= 1;
+  }
+}
+
 void Instructions::setIndexRegisterI(Chip8 *const chip8, OpCodeArgs args) {
   chip8->I = args;
 }
 
 void Instructions::display(Chip8 *const chip8, OpCodeArgs args) {
-  const uint8_t xArg = (args & 0x0F00) >> 8;
-  const uint8_t yArg = (args & 0x00F0) >> 4;
+  const uint8_t xArg = getXFrom0X00(args);
+  const uint8_t yArg = getYFrom00Y0(args);
   uint8_t x = (chip8->registers.at(xArg)) % DISPLAY_WIDTH;
   uint8_t y = (chip8->registers.at(yArg)) % DISPLAY_HEIGHT;
   chip8->VF() = 0;

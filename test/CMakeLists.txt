@@ -27,6 +27,7 @@ add_executable(
   instructions/skip.cpp
   instructions/subroutine.cpp
   instructions/subtract.cpp
+  instructions/shift.cpp
 )
 
 target_link_libraries(

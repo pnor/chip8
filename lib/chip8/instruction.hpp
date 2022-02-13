@@ -65,6 +65,12 @@ public:
   /** 8XY7 */
   static void subtractXFromY(Chip8 *const chip8, OpCodeArgs args);
 
+  /** 8XY6 Right Shift */
+  static void shiftRightOne(Chip8 *const chip8, OpCodeArgs args);
+
+  /** 8XYE Left Shift */
+  static void shiftLefttOne(Chip8 *const chip8, OpCodeArgs args);
+
   /** ANNN */
   static void setIndexRegisterI(Chip8 *const chip8, OpCodeArgs args);
 

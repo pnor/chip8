@@ -4,6 +4,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <memory>
 #include <optional>
 #include <vector>
 
@@ -91,7 +92,7 @@ public:
   /** Number of CHIP-8 instructions emulated per second */
   size_t instructionsPerSecond = 700;
   /** Configuration of the system */
-  Chip8Config config();
+  Chip8Config config;
 
   explicit Chip8(Chip8Interface interface);
 

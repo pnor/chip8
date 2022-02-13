@@ -1,6 +1,7 @@
 #include "chip8.hpp"
 
 #include <algorithm>
+#include <cassert>
 #include <cstring>
 #include <iostream>
 #include <string>
@@ -97,8 +98,16 @@ void Chip8::decodeAndExecuteArithmetic(OpCodeArgs args) {
     Instructions::subtractYFromX(this, args);
     break;
   }
+  case 0x6: {
+    Instructions::shiftRightOne(this, args);
+    break;
+  }
   case 0x7: {
     Instructions::subtractXFromY(this, args);
+    break;
+  }
+  case 0xE: {
+    Instructions::shiftLefttOne(this, args);
     break;
   }
   default: {
