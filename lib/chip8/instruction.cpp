@@ -2,6 +2,7 @@
 #include <cassert>
 #include <cstdint>
 #include <iostream>
+#include <limits>
 
 #include "instruction.hpp"
 
@@ -212,7 +213,10 @@ void Instructions::jumpWithOffset(Chip8 *const chip8, OpCodeArgs args) {
 }
 
 void Instructions::random(Chip8 *const chip8, OpCodeArgs args) {
-  chip8->registers.at(0) = 9; // TODO
+  const uint8_t regX = getXFrom0X00(args);
+  const uint8_t mask = args & 0x00FF;
+  uint8_t random = rand() % std::numeric_limits<uint8_t>::max();
+  chip8->registers.at(regX) = random & mask;
 }
 
 void Instructions::display(Chip8 *const chip8, OpCodeArgs args) {

@@ -42,7 +42,10 @@ void Chip8::setupFonts() {
   }
 }
 
-Chip8::Chip8(Chip8Interface interface) : interface(interface) { reset(); }
+Chip8::Chip8(Chip8Interface interface) : interface(interface) {
+  std::srand(config.randomSeed());
+  reset();
+}
 
 //
 // ===== Running Chip8 System =========================
