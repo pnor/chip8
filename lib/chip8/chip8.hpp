@@ -94,7 +94,7 @@ public:
   /** Configuration of the system */
   Chip8Config config;
 
-  explicit Chip8(Chip8Interface interface);
+  explicit Chip8(Chip8Interface &&interface);
 
   //
   // Running Chip8 System

@@ -256,4 +256,12 @@ void Instructions::display(Chip8 *const chip8, OpCodeArgs args) {
   chip8->interface.callDisplayHook(chip8);
 }
 
+void Instructions::skipIfKeyPressed(Chip8 *const chip8, OpCodeArgs args) {
+  // TODO
+}
+
+void Instructions::skipIfKeyNotPressed(Chip8 *const chip8, OpCodeArgs args) {
+  // TODO
+}
+
 } // namespace chip8

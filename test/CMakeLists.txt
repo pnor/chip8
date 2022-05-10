@@ -28,6 +28,7 @@ add_executable(
   instructions/set_register_x_to_y.cpp
   instructions/shift.cpp
   instructions/skip.cpp
+  instructions/skip_if.cpp
   instructions/subroutine.cpp
   instructions/subtract.cpp
 )

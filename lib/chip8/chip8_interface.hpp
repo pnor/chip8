@@ -2,6 +2,9 @@
 #define CHIP8_INTERFACE_H_
 
 #include <functional>
+#include <memory>
+
+#include "chip8_input.hpp"
 
 namespace chip8 {
 
@@ -14,8 +17,11 @@ private:
   std::function<void(Chip8 *chip8)> soundHook;
 
 public:
-  Chip8Interface(std::function<void(chip8::Chip8 *)> updateDisplayHook,
+  Chip8Interface(std::unique_ptr<IInput> input,
+                 std::function<void(chip8::Chip8 *)> updateDisplayHook,
                  std::function<void(chip8::Chip8 *)> soundHook);
+
+  std::unique_ptr<IInput> input;
 
   void callDisplayHook(Chip8 *chip8);
   void callSoundHook(Chip8 *chip8);

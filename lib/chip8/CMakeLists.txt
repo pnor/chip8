@@ -12,4 +12,5 @@ add_library(
   instruction.cpp
   irom.hpp
   chip8_config.cpp
+  chip8_input.hpp
 )

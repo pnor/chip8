@@ -3,6 +3,7 @@
 
 #include <time.h>
 
+/** Configuration options for Chip8 */
 class Chip8Config {
 public:
   /** Defaults to the original COSMAC VIP*/

@@ -1,5 +1,6 @@
 #ifndef HELPER_H_
 #define HELPER_H_
+// TODO
 
 #include <memory>
 
@@ -17,6 +18,14 @@ constexpr size_t ROM_START_ADDRESS = 0x200;
 constexpr size_t INSTRUCTION_BYTE_SIZE = 2;
 
 const std::function<void(chip8::Chip8 *chip8)> NOP_FUNC = [](chip8::Chip8 *) {};
+
+// TODO
+class TestInput : public IInput {
+public:
+  virtual bool pollKeyState() override;
+  virtual bool waitForKeyPressed() override;
+  virtual bool waitForKeyPress() override;
+};
 
 Chip8 initChip8(std::optional<std::unique_ptr<chip8::IROM>> rom = std::nullopt);
 

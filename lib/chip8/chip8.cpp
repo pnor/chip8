@@ -42,7 +42,7 @@ void Chip8::setupFonts() {
   }
 }
 
-Chip8::Chip8(Chip8Interface interface) : interface(interface) {
+Chip8::Chip8(Chip8Interface &&interface) : interface(std::move(interface)) {
   std::srand(config.randomSeed());
   reset();
 }
@@ -189,6 +189,22 @@ void Chip8::decodeAndExecute(Instruction instruction) {
   case 0xD: {
     Instructions::display(this, args);
     break;
+  }
+  case 0xE: {
+    const uint8_t lastByte = args & 0x00FF;
+    switch (lastByte) {
+    case 0x9E: {
+      Instructions::skipIfKeyPressed(this, args);
+      break;
+    }
+    case 0xA1: {
+      Instructions::skipIfKeyNotPressed(this, args);
+      break;
+    }
+    default: {
+      unknownOpCode(opCode, args);
+    }
+    }
   }
   default: {
     unknownOpCode(opCode, args);

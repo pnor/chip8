@@ -5,7 +5,7 @@ add_library(
   terminal_frontend
   SHARED
   terminal_frontend.cpp
-  terminal_frontend.hpp
+  terminal_input.cpp
 )
 
 target_link_libraries(

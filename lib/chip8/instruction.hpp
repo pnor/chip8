@@ -82,6 +82,12 @@ public:
 
   /** DXYN */
   static void display(Chip8 *const chip8, OpCodeArgs args);
+
+  /** EX9E */
+  static void skipIfKeyPressed(Chip8 *const chip8, OpCodeArgs args);
+
+  /** EXA1 */
+  static void skipIfKeyNotPressed(Chip8 *const chip8, OpCodeArgs args);
 };
 
 } // namespace chip8
