@@ -259,7 +259,11 @@ void Instructions::display(Chip8 *const chip8, OpCodeArgs args) {
 void Instructions::skipIfKeyPressed(Chip8 *const chip8, OpCodeArgs args) {
   const unsigned int key = getXFrom0X00(args);
   const auto keyCode = intToKeyCode(key);
-  if (keyCode.has_value() && chip8->input()->pollKeyState(keyCode.value())) {
+
+  const auto hasValue = keyCode.has_value();
+  const auto pollRes = chip8->input()->pollKeyState(keyCode.value());
+
+  if (hasValue && pollRes) {
     chip8->PC += INSTRUCTION_BYTE_SIZE;
   }
 }

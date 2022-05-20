@@ -1,6 +1,8 @@
 #include "helper.hpp"
 
-bool TestInput::pollKeyState(const KeyCode key) { return true; }
+bool TestInput::pollKeyState(const KeyCode key) {
+  return this->pollFunction(key);
+}
 
 TestInput::TestInput(InputFunction pollFunction) {
   this->pollFunction = pollFunction;
