@@ -257,11 +257,19 @@ void Instructions::display(Chip8 *const chip8, OpCodeArgs args) {
 }
 
 void Instructions::skipIfKeyPressed(Chip8 *const chip8, OpCodeArgs args) {
-  // TODO
+  const unsigned int key = getXFrom0X00(args);
+  const auto keyCode = intToKeyCode(key);
+  if (keyCode.has_value() && chip8->input()->pollKeyState(keyCode.value())) {
+    chip8->PC += INSTRUCTION_BYTE_SIZE;
+  }
 }
 
 void Instructions::skipIfKeyNotPressed(Chip8 *const chip8, OpCodeArgs args) {
-  // TODO
+  const unsigned int key = getXFrom0X00(args);
+  const auto keyCode = intToKeyCode(key);
+  if (keyCode.has_value() && !chip8->input()->pollKeyState(keyCode.value())) {
+    chip8->PC += INSTRUCTION_BYTE_SIZE;
+  }
 }
 
 } // namespace chip8

@@ -19,7 +19,7 @@ using std::uint16_t;
 
 static void unknownOpCode(OpCode code, OpCodeArgs args) {
   uint16_t instruction = (code << 12) + args;
-  char buf[4];
+  char buf[5];
   std::memset(buf, 0, sizeof(char) * 4);
   std::sprintf(buf, "%X", instruction);
   std::string opCodeString(buf);
@@ -119,6 +119,23 @@ void Chip8::decodeAndExecuteArithmetic(OpCodeArgs args) {
   }
 }
 
+void Chip8::decodeAndExecuteInputSkips(OpCodeArgs args) {
+  const uint8_t lastByte = args & 0x00FF;
+  switch (lastByte) {
+  case 0x9E: {
+    Instructions::skipIfKeyPressed(this, args);
+    break;
+  }
+  case 0xA1: {
+    Instructions::skipIfKeyNotPressed(this, args);
+    break;
+  }
+  default: {
+    unknownOpCode(0xE, args);
+  }
+  }
+}
+
 void Chip8::decodeAndExecute(Instruction instruction) {
   OpCode opCode = (instruction & 0xF000) >> 12;
   OpCodeArgs args = instruction & 0x0FFF;
@@ -191,20 +208,8 @@ void Chip8::decodeAndExecute(Instruction instruction) {
     break;
   }
   case 0xE: {
-    const uint8_t lastByte = args & 0x00FF;
-    switch (lastByte) {
-    case 0x9E: {
-      Instructions::skipIfKeyPressed(this, args);
-      break;
-    }
-    case 0xA1: {
-      Instructions::skipIfKeyNotPressed(this, args);
-      break;
-    }
-    default: {
-      unknownOpCode(opCode, args);
-    }
-    }
+    decodeAndExecuteInputSkips(args);
+    break;
   }
   default: {
     unknownOpCode(opCode, args);

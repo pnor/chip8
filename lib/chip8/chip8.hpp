@@ -76,11 +76,14 @@ private:
   Instruction fetch();
   void decodeAndExecute(Instruction instruction);
   void decodeAndExecuteArithmetic(OpCodeArgs args);
+  void decodeAndExecuteInputSkips(OpCodeArgs args);
 
   //
   // Convenience Functions
   //
   constexpr std::uint8_t &VF() { return registers[0xF]; }
+
+  constexpr std::unique_ptr<IInput> &input() { return interface.input; }
 
   constexpr bool &displayAt(const size_t col, const size_t row) {
     return display.at(row).at(col);

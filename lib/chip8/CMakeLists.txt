@@ -6,11 +6,12 @@ add_library(
   SHARED
   array_rom.hpp
   chip8.cpp
+  chip8_config.cpp
+  chip8_input.hpp
   chip8_interface.cpp
   file_rom.cpp
   font.hpp
   instruction.cpp
   irom.hpp
-  chip8_config.cpp
-  chip8_input.hpp
+  key_code.cpp
 )

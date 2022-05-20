@@ -6,9 +6,7 @@
 // Input Source for Chip8 that prints to a terminal
 class TerminalInput : public IInput {
 public:
-  virtual bool pollKeyState();
-  virtual bool waitForKeyPressed();
-  virtual bool waitForKeyPress();
+  virtual bool pollKeyState(const KeyCode code) override;
 };
 
 #endif // TERMINAL_INPUT_H_

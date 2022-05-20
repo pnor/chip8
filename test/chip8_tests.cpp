@@ -9,7 +9,7 @@ using std::byte;
 
 TEST(Chip8SystemTests, FontInit) {
   auto interface = chip8::Chip8Interface(
-      std::make_unique<TestInput>(), [](chip8::Chip8 *) {},
+      TestInput::inputWithNoKeyPressed(), [](chip8::Chip8 *) {},
       [](chip8::Chip8 *) {});
   auto chip8 = chip8::Chip8(std::move(interface));
   auto memory = chip8.getMemory();
@@ -112,8 +112,9 @@ TEST(Chip8SystemTests, FontInit) {
 }
 
 TEST(Chip8SystemTests, Reset) {
-  auto interface =
-      chip8::Chip8Interface(std::make_unique<TestInput>(), NOP_FUNC, NOP_FUNC);
-  auto chip8 = chip8::Chip8(std::move(interface));
+  //   auto interface =
+  //       chip8::Chip8Interface(std::make_unique<TestInput>(), NOP_FUNC,
+  //       NOP_FUNC);
+  //  auto chip8 = chip8::Chip8(std::move(interface));
   // TODO
 }

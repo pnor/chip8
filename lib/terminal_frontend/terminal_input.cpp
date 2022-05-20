@@ -2,8 +2,4 @@
 
 // TODO
 
-bool TerminalInput::pollKeyState() { return true; }
-
-bool TerminalInput::waitForKeyPressed() { return true; }
-
-bool TerminalInput::waitForKeyPress() { return true; }
+bool TerminalInput::pollKeyState(const KeyCode code) { return true; }
