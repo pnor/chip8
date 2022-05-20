@@ -38,4 +38,30 @@ TEST(SkipIfNoSkip, SkipIf) {
   EXPECT_EQ(chip8.getRegister(1), 0x00);
 }
 
-TEST(SkipIfNot, SkipIf) {}
+TEST(SkipIfNotPressed, SkipIfNotPressed) {
+  auto input = TestInput::inputWithKeyPressed(KeyCode::KEY_0);
+  auto chip8 = initChip8(std::nullopt, std::move(input));
+  chip8.loadRom(romWithInstructions<3>({
+      0xE0A1, // skip if 0 not pressed
+      0x6001, // set register 0
+      0x6101, // set register 1
+  }));
+  doNcycles<2>(chip8);
+
+  EXPECT_EQ(chip8.getRegister(0), 0x01);
+  EXPECT_EQ(chip8.getRegister(1), 0x00);
+}
+
+TEST(SkipIfNotPressedNoSkip, SkipIfNotPressed) {
+  auto input = TestInput::inputWithKeyPressed(KeyCode::KEY_1);
+  auto chip8 = initChip8(std::nullopt, std::move(input));
+  chip8.loadRom(romWithInstructions<3>({
+      0xE0A1, // skip if 0 not pressed
+      0x6001, // set register 0
+      0x6101, // set register 1
+  }));
+  doNcycles<2>(chip8);
+
+  EXPECT_EQ(chip8.getRegister(0), 0x00);
+  EXPECT_EQ(chip8.getRegister(1), 0x01);
+}
