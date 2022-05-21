@@ -279,15 +279,17 @@ void Instructions::skipIfKeyNotPressed(Chip8 *const chip8, OpCodeArgs args) {
 void Instructions::setRegisterToDelayTimer(Chip8 *const chip8,
                                            OpCodeArgs args) {
   const uint8_t regX = getXFrom0X00(args);
-  chip8->delayTimer = chip8->registers.at(regX);
+  chip8->registers.at(regX) = chip8->delayTimer;
 }
 
 void Instructions::setDelayTimer(Chip8 *const chip8, OpCodeArgs args) {
-  // TODO
+  const uint8_t regX = getXFrom0X00(args);
+  chip8->delayTimer = chip8->registers.at(regX);
 }
 
 void Instructions::setSoundTimer(Chip8 *const chip8, OpCodeArgs args) {
-  // TODO
+  const uint8_t regX = getXFrom0X00(args);
+  chip8->soundTimer = chip8->registers.at(regX);
 }
 
 } // namespace chip8
