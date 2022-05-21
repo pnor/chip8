@@ -12,7 +12,6 @@ add_executable(
   emacs_chip8_test
   chip8_tests.cpp
   helper.cpp
-  helper.hpp
   instructions/add.cpp
   instructions/add_registers.cpp
   instructions/binary_and.cpp
@@ -31,6 +30,7 @@ add_executable(
   instructions/skip_if.cpp
   instructions/subroutine.cpp
   instructions/subtract.cpp
+  instructions/timers.cpp
 )
 
 target_link_libraries(

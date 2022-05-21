@@ -77,6 +77,7 @@ private:
   void decodeAndExecute(Instruction instruction);
   void decodeAndExecuteArithmetic(OpCodeArgs args);
   void decodeAndExecuteInputSkips(OpCodeArgs args);
+  void decodeAndExecuteTimerFunctions(OpCodeArgs args);
 
   //
   // Convenience Functions
@@ -122,6 +123,8 @@ public:
   std::uint16_t getI() const;
   std::optional<std::uint16_t> peekStack() const;
   std::uint8_t getRegister(size_t reg) const;
+  std::uint8_t getDelayTimer() const;
+  std::uint8_t getSoundTimer() const;
 };
 
 } // namespace chip8

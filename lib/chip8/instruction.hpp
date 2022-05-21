@@ -88,6 +88,15 @@ public:
 
   /** EXA1 */
   static void skipIfKeyNotPressed(Chip8 *const chip8, OpCodeArgs args);
+
+  /** FX07 */
+  static void setRegisterToDelayTimer(Chip8 *const chip8, OpCodeArgs args);
+
+  /** FX15 */
+  static void setDelayTimer(Chip8 *const chip8, OpCodeArgs args);
+
+  /** FX18 */
+  static void setSoundTimer(Chip8 *const chip8, OpCodeArgs args);
 };
 
 } // namespace chip8

@@ -136,6 +136,27 @@ void Chip8::decodeAndExecuteInputSkips(OpCodeArgs args) {
   }
 }
 
+void Chip8::decodeAndExecuteTimerFunctions(OpCodeArgs args) {
+  const uint8_t lastByte = args & 0x00FF;
+  switch (lastByte) {
+  case 0x07: {
+    Instructions::setRegisterToDelayTimer(this, args);
+    break;
+  }
+  case 0x15: {
+    Instructions::setDelayTimer(this, args);
+    break;
+  }
+  case 0x18: {
+    Instructions::setSoundTimer(this, args);
+    break;
+  }
+  default: {
+    unknownOpCode(0xF, args);
+  }
+  }
+}
+
 void Chip8::decodeAndExecute(Instruction instruction) {
   OpCode opCode = (instruction & 0xF000) >> 12;
   OpCodeArgs args = instruction & 0x0FFF;
@@ -211,6 +232,10 @@ void Chip8::decodeAndExecute(Instruction instruction) {
     decodeAndExecuteInputSkips(args);
     break;
   }
+  case 0xF: {
+    decodeAndExecuteTimerFunctions(args);
+    break;
+  }
   default: {
     unknownOpCode(opCode, args);
   }
@@ -265,5 +290,9 @@ std::optional<std::uint16_t> Chip8::peekStack() const {
 }
 
 std::uint8_t Chip8::getRegister(size_t reg) const { return registers.at(reg); }
+
+std::uint8_t Chip8::getDelayTimer() const { return delayTimer; }
+
+std::uint8_t Chip8::getSoundTimer() const { return soundTimer; }
 
 } // namespace chip8
