@@ -4,6 +4,8 @@ bool TestInput::pollKeyState(const KeyCode key) {
   return this->pollFunction(key);
 }
 
+std::optional<KeyCode> TestInput::keyPressed() { return keyCodePressed; }
+
 TestInput::TestInput(InputFunction pollFunction) {
   this->pollFunction = pollFunction;
 }
@@ -12,7 +14,9 @@ unique_ptr<TestInput> TestInput::inputWithKeyPressed(const KeyCode key) {
   const InputFunction keyPollFunction = [key](const KeyCode code) {
     return code == key;
   };
-  return unique_ptr<TestInput>(new TestInput(keyPollFunction));
+  auto input = unique_ptr<TestInput>(new TestInput(keyPollFunction));
+  input->keyCodePressed = key;
+  return input;
 }
 
 unique_ptr<TestInput> TestInput::inputWithNoKeyPressed() {

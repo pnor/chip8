@@ -14,11 +14,13 @@ add_executable(
   helper.cpp
   instructions/add.cpp
   instructions/add_registers.cpp
+  instructions/add_to_index.cpp
   instructions/binary_and.cpp
   instructions/binary_or.cpp
   instructions/binary_xor.cpp
   instructions/clear_screen.cpp
   instructions/display.cpp
+  instructions/get_key.cpp
   instructions/jump.cpp
   instructions/jumpWithOffset.cpp
   instructions/random.cpp

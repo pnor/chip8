@@ -24,6 +24,7 @@ const std::function<void(chip8::Chip8 *chip8)> NOP_FUNC = [](chip8::Chip8 *) {};
 class TestInput : public IInput {
 public:
   virtual bool pollKeyState(const KeyCode code) override;
+  virtual std::optional<KeyCode> keyPressed() override;
 
   /** `key` is the Key that is always pressed */
   static unique_ptr<TestInput> inputWithKeyPressed(const KeyCode key);
@@ -32,6 +33,7 @@ public:
 
 private:
   InputFunction pollFunction;
+  std::optional<KeyCode> keyCodePressed = std::nullopt;
 
   TestInput(InputFunction pollFunction);
 };

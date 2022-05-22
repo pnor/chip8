@@ -292,4 +292,23 @@ void Instructions::setSoundTimer(Chip8 *const chip8, OpCodeArgs args) {
   chip8->soundTimer = chip8->registers.at(regX);
 }
 
+void Instructions::addToIndex(Chip8 *const chip8, OpCodeArgs args) {
+  const uint8_t regX = getXFrom0X00(args);
+  const auto newI = chip8->I + chip8->registers.at(regX);
+  if (newI > 0x0FFF) {
+    chip8->VF() = 1;
+  }
+  chip8->I = newI;
+}
+
+void Instructions::getKey(Chip8 *const chip8, OpCodeArgs args) {
+  const auto key = chip8->input()->keyPressed();
+  if (key == std::nullopt) {
+    chip8->PC -= INSTRUCTION_BYTE_SIZE;
+  } else {
+    const uint8_t regX = getXFrom0X00(args);
+    chip8->registers.at(regX) = key.value();
+  }
+}
+
 } // namespace chip8

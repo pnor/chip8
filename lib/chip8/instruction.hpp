@@ -97,6 +97,12 @@ public:
 
   /** FX18 */
   static void setSoundTimer(Chip8 *const chip8, OpCodeArgs args);
+
+  /** FX1E */
+  static void addToIndex(Chip8 *const chip8, OpCodeArgs args);
+
+  /** FX0A  */
+  static void getKey(Chip8 *const chip8, OpCodeArgs args);
 };
 
 } // namespace chip8

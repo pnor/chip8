@@ -233,7 +233,14 @@ void Chip8::decodeAndExecute(Instruction instruction) {
     break;
   }
   case 0xF: {
-    decodeAndExecuteTimerFunctions(args);
+    auto nibble = args & 0x00FF;
+    if (nibble == 0x1E) {
+      Instructions::addToIndex(this, args);
+    } else if (nibble == 0x0A) {
+      Instructions::getKey(this, args);
+    } else {
+      decodeAndExecuteTimerFunctions(args);
+    }
     break;
   }
   default: {

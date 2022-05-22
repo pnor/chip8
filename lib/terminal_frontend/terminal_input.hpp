@@ -7,6 +7,7 @@
 class TerminalInput : public IInput {
 public:
   virtual bool pollKeyState(const KeyCode code) override;
+  virtual std::optional<KeyCode> keyPressed() override;
 };
 
 #endif // TERMINAL_INPUT_H_

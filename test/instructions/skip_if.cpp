@@ -6,10 +6,6 @@
 
 #include "../helper.hpp"
 
-// TODO
-// EX9E skip if pressed
-// EXA1 skip if not pressed
-
 TEST(SkipIf, SkipIf) {
   auto input = TestInput::inputWithKeyPressed(KeyCode::KEY_0);
   auto chip8 = initChip8(std::nullopt, std::move(input));
