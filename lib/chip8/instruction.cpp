@@ -318,4 +318,22 @@ void Instructions::fontCharacter(Chip8 *const chip8, OpCodeArgs args) {
   chip8->I = FONT_START_ADDRESS + (FONT_BYTE_LENGTH * character);
 }
 
+void Instructions::binaryCodedDecimalConversion(Chip8 *const chip8,
+                                                OpCodeArgs args) {
+  const uint8_t regX = getXFrom0X00(args);
+  uint8_t value = chip8->registers.at(regX);
+  const auto I = chip8->I;
+  auto &memory = chip8->memory;
+  // X..
+  const uint8_t lastDigit = value / 100;
+  memory[I] = static_cast<std::byte>(lastDigit);
+  value -= lastDigit * 100;
+  // .X.
+  const uint8_t middleDigit = value / 10;
+  memory[I + 1] = static_cast<std::byte>(middleDigit);
+  value -= middleDigit * 10;
+  // ..X
+  memory[I + 2] = static_cast<std::byte>(value);
+}
+
 } // namespace chip8

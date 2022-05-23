@@ -242,6 +242,8 @@ void Chip8::decodeAndExecute(Instruction instruction) {
       Instructions::getKey(this, args);
     } else if (lastByte == 0x29) {
       Instructions::fontCharacter(this, args);
+    } else if (lastByte == 0x33) {
+      Instructions::binaryCodedDecimalConversion(this, args);
     } else {
       decodeAndExecuteTimerFunctions(args);
     }

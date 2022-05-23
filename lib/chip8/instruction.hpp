@@ -106,6 +106,9 @@ public:
 
   /** FX29  */
   static void fontCharacter(Chip8 *const chip8, OpCodeArgs args);
+
+  /** FX33 */
+  static void binaryCodedDecimalConversion(Chip8 *const chip8, OpCodeArgs args);
 };
 
 } // namespace chip8

@@ -16,6 +16,7 @@ add_executable(
   instructions/add_registers.cpp
   instructions/add_to_index.cpp
   instructions/binary_and.cpp
+  instructions/binary_coded_decimal_conversion.cpp
   instructions/binary_or.cpp
   instructions/binary_xor.cpp
   instructions/clear_screen.cpp
