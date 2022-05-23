@@ -11,6 +11,7 @@ int main() {
   chip8::Chip8Interface interface(std::move(input), term_chip8::updateDisplay,
                                   [](chip8::Chip8 *) {});
   chip8::Chip8 chip8 = chip8::Chip8(std::move(interface));
+  chip8.init();
 
   auto res =
       chip8.loadRom(std::make_unique<chip8::FileROM>("files/roms/bc_test.ch8"));

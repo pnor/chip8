@@ -4,6 +4,7 @@
 #include <iostream>
 #include <limits>
 
+#include "font.hpp"
 #include "instruction.hpp"
 
 namespace chip8 {
@@ -92,7 +93,7 @@ void Instructions::skipIfRegistersNotEqual(Chip8 *const chip8,
 void Instructions::setRegister(Chip8 *const chip8, const OpCodeArgs args) {
   uint8_t reg = getXFrom0X00(args);
   uint8_t value = args & 0x00FF;
-  chip8->registers.at(reg) += value;
+  chip8->registers.at(reg) = value;
 }
 
 void Instructions::addValueToRegister(Chip8 *const chip8, OpCodeArgs args) {
@@ -309,6 +310,12 @@ void Instructions::getKey(Chip8 *const chip8, OpCodeArgs args) {
     const uint8_t regX = getXFrom0X00(args);
     chip8->registers.at(regX) = key.value();
   }
+}
+
+void Instructions::fontCharacter(Chip8 *const chip8, OpCodeArgs args) {
+  const uint8_t regX = getXFrom0X00(args);
+  const uint8_t character = chip8->registers.at(regX) & 0x0F;
+  chip8->I = FONT_START_ADDRESS + (FONT_BYTE_LENGTH * character);
 }
 
 } // namespace chip8

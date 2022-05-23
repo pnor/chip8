@@ -40,5 +40,6 @@ Chip8 initChip8(std::optional<std::unique_ptr<chip8::IROM>> rom,
     chip8.loadRom(std::move(rom.value()));
   }
   chip8.config.setRandomSeed(0);
+  chip8.init();
   return chip8;
 }

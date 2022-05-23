@@ -103,6 +103,9 @@ public:
 
   /** FX0A  */
   static void getKey(Chip8 *const chip8, OpCodeArgs args);
+
+  /** FX29  */
+  static void fontCharacter(Chip8 *const chip8, OpCodeArgs args);
 };
 
 } // namespace chip8

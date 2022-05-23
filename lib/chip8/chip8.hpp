@@ -25,6 +25,8 @@ using OpCodeArgs = std::uint16_t;
 constexpr size_t ROM_START_ADDRESS = 0x200;
 /** Number of bytes 1 instruction takes */
 constexpr size_t INSTRUCTION_BYTE_SIZE = 2;
+/** First address in memory where font data is held */
+constexpr size_t FONT_START_ADDRESS = 0x50;
 
 /** Width of Chip8 Display */
 constexpr size_t DISPLAY_WIDTH = 64;
@@ -103,6 +105,8 @@ public:
   //
   // Running Chip8 System
   //
+  /** Initializes the Chip8 system */
+  void init();
   /** Load ROM into memory */
   bool loadRom(std::unique_ptr<IROM> rom);
   /** Perform one fetch/decode/execute cycle */

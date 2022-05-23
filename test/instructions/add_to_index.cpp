@@ -8,7 +8,7 @@
 
 TEST(AddToIndex, AddToIndex) {
   auto chip8 = chip8AfterRunning<2>({
-      0x60DE, // Set register  0 to 0xDE
+      0x60DE, // Set register 0 to 0xDE
       0xF01E, // Add register 0 to Index
   });
 

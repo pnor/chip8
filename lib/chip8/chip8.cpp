@@ -35,7 +35,7 @@ static constexpr std::uint8_t lastNibble(OpCodeArgs args) {
 //
 
 void Chip8::setupFonts() {
-  auto *memPtr = &memory[0x50];
+  auto *memPtr = &memory[FONT_START_ADDRESS];
   for (size_t i = 0; i < NUM_FONTS; i++) {
     writeFontToMemory(memPtr, FONTS[i]);
     memPtr += FONT_BYTE_LENGTH;
@@ -50,6 +50,8 @@ Chip8::Chip8(Chip8Interface &&interface) : interface(std::move(interface)) {
 //
 // ===== Running Chip8 System =========================
 //
+
+void Chip8::init() { setupFonts(); }
 
 bool Chip8::loadRom(std::unique_ptr<IROM> rom) {
   std::byte *memPtr = memory.begin() + ROM_START_ADDRESS;
@@ -233,11 +235,13 @@ void Chip8::decodeAndExecute(Instruction instruction) {
     break;
   }
   case 0xF: {
-    auto nibble = args & 0x00FF;
-    if (nibble == 0x1E) {
+    auto lastByte = args & 0x00FF;
+    if (lastByte == 0x1E) {
       Instructions::addToIndex(this, args);
-    } else if (nibble == 0x0A) {
+    } else if (lastByte == 0x0A) {
       Instructions::getKey(this, args);
+    } else if (lastByte == 0x29) {
+      Instructions::fontCharacter(this, args);
     } else {
       decodeAndExecuteTimerFunctions(args);
     }

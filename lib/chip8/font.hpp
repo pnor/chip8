@@ -4,9 +4,9 @@
 #include <cstddef>
 
 namespace chip8 {
-using FontData = std::byte[5];
-constexpr size_t FONT_BYTE_LENGTH = 5;
 constexpr size_t NUM_FONTS = 16;
+constexpr size_t FONT_BYTE_LENGTH = 5;
+using FontData = std::byte[FONT_BYTE_LENGTH];
 
 /** Write `font` to memory starting at `memPtr` */
 constexpr void writeFontToMemory(std::byte *memPtr, const FontData font) {

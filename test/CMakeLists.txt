@@ -20,6 +20,7 @@ add_executable(
   instructions/binary_xor.cpp
   instructions/clear_screen.cpp
   instructions/display.cpp
+  instructions/font_character.cpp
   instructions/get_key.cpp
   instructions/jump.cpp
   instructions/jumpWithOffset.cpp
