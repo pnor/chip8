@@ -9,16 +9,19 @@ unsigned int Chip8Config::randomSeed() const { return _randomSeed; }
 void Chip8Config::configureAsCOSMACVIP() {
   shiftUsesYRegister = true;
   jumpWithOffsetUsesV0 = true;
+  storeAndLoadMemoryIncrementsI = true;
 }
 
 void Chip8Config::configureAsChip48() {
   shiftUsesYRegister = false;
   jumpWithOffsetUsesV0 = false;
+  storeAndLoadMemoryIncrementsI = false;
 }
 
 void Chip8Config::configureAsSuperCHIP() {
   shiftUsesYRegister = false;
   jumpWithOffsetUsesV0 = false;
+  storeAndLoadMemoryIncrementsI = false;
 }
 
 void Chip8Config::setRandomSeed(unsigned int seed) {

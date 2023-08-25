@@ -11,6 +11,7 @@ public:
 
   bool shiftUsesYRegister = false;
   bool jumpWithOffsetUsesV0 = false;
+  bool storeAndLoadMemoryIncrementsI = false;
 
   unsigned int randomSeed() const;
 

@@ -25,6 +25,7 @@ add_executable(
   instructions/get_key.cpp
   instructions/jump.cpp
   instructions/jumpWithOffset.cpp
+  instructions/load_memory.cpp
   instructions/random.cpp
   instructions/set.cpp
   instructions/set_index_register.cpp
@@ -32,6 +33,7 @@ add_executable(
   instructions/shift.cpp
   instructions/skip.cpp
   instructions/skip_if.cpp
+  instructions/store_memory.cpp
   instructions/subroutine.cpp
   instructions/subtract.cpp
   instructions/timers.cpp

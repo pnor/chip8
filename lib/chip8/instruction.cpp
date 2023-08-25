@@ -50,7 +50,7 @@ void Instructions::pushSubroutine(Chip8 *const chip8, OpCodeArgs args) {
 }
 
 void Instructions::popSubroutine(Chip8 *const chip8, OpCodeArgs args) {
-  auto &stack = chip8->stack;
+  std::vector<uint16_t> &stack = chip8->stack;
   assert(!stack.empty());
   chip8->PC = stack.back();
   stack.pop_back();
@@ -334,6 +334,40 @@ void Instructions::binaryCodedDecimalConversion(Chip8 *const chip8,
   value -= middleDigit * 10;
   // ..X
   memory[I + 2] = static_cast<std::byte>(value);
+}
+
+void Instructions::storeMemory(Chip8 *const chip8, OpCodeArgs args) {
+  const uint8_t regX = getXFrom0X00(args);
+  auto &I = chip8->I;
+  auto &memory = chip8->memory;
+
+  if (chip8->config.storeAndLoadMemoryIncrementsI) {
+    for (uint8_t i = 0; i <= regX; i++) {
+      memory[I] = static_cast<std::byte>(chip8->registers.at(i));
+      I++;
+    }
+  } else {
+    for (uint8_t i = 0; i <= regX; i++) {
+      memory[I + i] = static_cast<std::byte>(chip8->registers.at(i));
+    }
+  }
+}
+
+void Instructions::loadMemory(Chip8 *const chip8, OpCodeArgs args) {
+  const uint8_t regX = getXFrom0X00(args);
+  auto &I = chip8->I;
+  auto &memory = chip8->memory;
+
+  if (chip8->config.storeAndLoadMemoryIncrementsI) {
+    for (uint8_t i = 0; i <= regX; i++) {
+      chip8->registers.at(i) = static_cast<uint8_t>(memory[I]);
+      I++;
+    }
+  } else {
+    for (uint8_t i = 0; i <= regX; i++) {
+      chip8->registers.at(i) = static_cast<uint8_t>(memory[I + i]);
+    }
+  }
 }
 
 } // namespace chip8

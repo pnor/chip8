@@ -109,6 +109,12 @@ public:
 
   /** FX33 */
   static void binaryCodedDecimalConversion(Chip8 *const chip8, OpCodeArgs args);
+
+  /** FX55 */
+  static void storeMemory(Chip8 *const chip8, OpCodeArgs args);
+
+  /** FX65 */
+  static void loadMemory(Chip8 *const chip8, OpCodeArgs args);
 };
 
 } // namespace chip8
