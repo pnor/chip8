@@ -356,7 +356,7 @@ void Instructions::storeMemory(Chip8 *const chip8, OpCodeArgs args) {
 void Instructions::loadMemory(Chip8 *const chip8, OpCodeArgs args) {
   const uint8_t regX = getXFrom0X00(args);
   auto &I = chip8->I;
-  auto &memory = chip8->memory;
+  const auto &memory = chip8->memory;
 
   if (chip8->config.storeAndLoadMemoryIncrementsI) {
     for (uint8_t i = 0; i <= regX; i++) {
