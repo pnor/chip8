@@ -34,3 +34,10 @@ You can:
   + ? poll if input was pressed
   + or hook chip8 calls to see if input pressed
   + or frontend calls chip8 function...
+
+* UI display
+end goal look like:
+
+functions:
+- draw game window
+- render

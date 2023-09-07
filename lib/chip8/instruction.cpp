@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cstdint>
+#include <format>
 #include <iostream>
 #include <limits>
 
@@ -261,18 +262,19 @@ void Instructions::skipIfKeyPressed(Chip8 *const chip8, OpCodeArgs args) {
   const unsigned int key = getXFrom0X00(args);
   const auto keyCode = intToKeyCode(key);
 
-  const auto hasValue = keyCode.has_value();
-  const auto pollRes = chip8->input()->pollKeyState(keyCode.value());
-
-  if (hasValue && pollRes) {
+  if (keyCode.has_value() && chip8->input()->pollKeyState(keyCode.value())) {
     chip8->PC += INSTRUCTION_BYTE_SIZE;
   }
 }
 
 void Instructions::skipIfKeyNotPressed(Chip8 *const chip8, OpCodeArgs args) {
   const unsigned int key = getXFrom0X00(args);
-  const auto keyCode = intToKeyCode(key);
-  if (keyCode.has_value() && !chip8->input()->pollKeyState(keyCode.value())) {
+  const std::optional<KeyCode> keyCode = intToKeyCode(key);
+  if (keyCode.has_value()) {
+    if (!chip8->input()->pollKeyState(keyCode.value())) {
+      chip8->PC += INSTRUCTION_BYTE_SIZE;
+    }
+  } else {
     chip8->PC += INSTRUCTION_BYTE_SIZE;
   }
 }
@@ -303,12 +305,12 @@ void Instructions::addToIndex(Chip8 *const chip8, OpCodeArgs args) {
 }
 
 void Instructions::getKey(Chip8 *const chip8, OpCodeArgs args) {
-  const auto key = chip8->input()->keyPressed();
+  const std::optional<KeyCode> key = chip8->input()->keyPressed();
   if (key == std::nullopt) {
     chip8->PC -= INSTRUCTION_BYTE_SIZE;
   } else {
     const uint8_t regX = getXFrom0X00(args);
-    chip8->registers.at(regX) = key.value();
+    chip8->registers.at(regX) = static_cast<uint8_t>(key.value());
   }
 }
 
