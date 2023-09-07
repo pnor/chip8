@@ -15,10 +15,8 @@ int main() {
   chip8::Chip8 chip8 = chip8::Chip8(std::move(interface));
   chip8.init();
 
-  auto res = chip8.loadRom(
-      std::make_unique<chip8::FileROM>("files/roms/6-keypad.ch8"));
-  // auto res = chip8.loadRom(
-  //     std::make_unique<chip8::FileROM>("files/roms/IBM Logo.ch8"));
+  auto res =
+      chip8.loadRom(std::make_unique<chip8::FileROM>("files/roms/guess.ch8"));
   if (res) {
     chip8.run();
   } else {

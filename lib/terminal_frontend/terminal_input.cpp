@@ -23,6 +23,13 @@ static const std::unordered_map<int, KeyCode> valueToKeyCode = {
     {68, KeyCode::KEY_D},
     {69, KeyCode::KEY_E},
     {70, KeyCode::KEY_F},
+    // a .. f
+    {97, KeyCode::KEY_A},
+    {98, KeyCode::KEY_B},
+    {99, KeyCode::KEY_C},
+    {100, KeyCode::KEY_D},
+    {101, KeyCode::KEY_E},
+    {102, KeyCode::KEY_F},
     // F1
     {265, KeyCode::KEY_F1},
     // F2
