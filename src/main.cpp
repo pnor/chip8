@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <iostream>
 #include <signal.h>
 
@@ -7,12 +8,14 @@
 #include "terminal_frontend.hpp"
 #include "terminal_input.hpp"
 
-void handleKeyboardInterrupt(int s) {
+static constexpr char *ROM_DIRECTORY = "files/roms/";
+
+static void handleKeyboardInterrupt(int s) {
   term_chip8::teardownDisplay();
   exit(0);
 }
 
-void setupKeyboardInterruptHandler() {
+static void setupKeyboardInterruptHandler() {
   // Handle keyboard interrupt
   struct sigaction sigIntHandler;
 
@@ -23,8 +26,7 @@ void setupKeyboardInterruptHandler() {
   sigaction(SIGINT, &sigIntHandler, NULL);
 }
 
-void emulateChip8() {
-  term_chip8::setupDisplay();
+static void emulateChip8() {
 
   std::unique_ptr<IInput> input = std::make_unique<TerminalInput>();
   chip8::Chip8Interface interface(std::move(input), term_chip8::updateDisplay,
@@ -39,11 +41,12 @@ void emulateChip8() {
   } else {
     std::cout << "couldn't load the rom ):\n";
   }
-
-  term_chip8::teardownDisplay();
 }
 
 int main() {
+  term_chip8::setupDisplay();
+  // display options, let user choose ROM
   setupKeyboardInterruptHandler();
   emulateChip8();
+  term_chip8::teardownDisplay();
 }
