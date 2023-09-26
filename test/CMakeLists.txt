@@ -9,7 +9,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 
 add_executable(
-  emacs_chip8_test
+  chip8_interpreter_test
   chip8_tests.cpp
   helper.cpp
   instructions/add.cpp
@@ -40,18 +40,16 @@ add_executable(
 )
 
 target_link_libraries(
-  emacs_chip8_test
+  chip8_interpreter_test
   PRIVATE
-  gtest_main
   chip8
-  emacs_frontend
+  gtest_main
 )
 
 target_include_directories(
-  emacs_chip8_test
+  chip8_interpreter_test
   PUBLIC
-  ${emacs_chip8_SOURCE_DIR}
-  ${emacs_chip8_SOURCE_DIR}/lib/chip8
-  ${emacs_chip8_SOURCE_DIR}/lib/emacs_frontend
-  ${emacs_chip8_SOURCE_DIR}/lib/term_frontend
+  ${chip8_emu_SOURCE_DIR}
+  ${chip8_emu_SOURCE_DIR}/lib/chip8
+  ${chip8_emu_SOURCE_DIR}/lib/term_frontend
 )

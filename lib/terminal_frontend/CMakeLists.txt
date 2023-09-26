@@ -21,6 +21,6 @@ target_link_libraries(
 target_include_directories(
   terminal_frontend
   PUBLIC
-  ${emacs_chip8_SOURCE_DIR}/lib/chip8
+  ${chip8_emu_SOURCE_DIR}/lib/chip8
   ${CURSES_INCLUDE_DIR}
 )

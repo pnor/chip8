@@ -35,8 +35,8 @@ function help_message {
 # ===== Variables ===============
 #
 
-executable_name='emacs_chip8'
-test_name='emacs_chip8_test'
+executable_name='chip8_emu'
+test_name='chip8_interpreter_test'
 
 #
 # ===== Functions ===============
