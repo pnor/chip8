@@ -27,7 +27,8 @@ function help_message {
         ./build clean         : Delete Releases
 
     flags:
-       -h (--help)          Help prompt"
+       -h (--help)          Help prompt
+"
     echo "$usage"
 }
 
@@ -120,7 +121,7 @@ fi
 
 
 case "$arg" in
-    "-h" | "--help")
+    "-h" | "--help" | "help")
         help_message
         exit 0
         ;;

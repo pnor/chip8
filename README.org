@@ -1,0 +1,19 @@
+#+title: Chip8 Emulator
+
+A project to get into writing emulators, starting with the simple Chip8 Interpreter.
+
+# Running
+You can run the emulator using the build script:
+#+begin_src sh
+./build.sh run
+#+end_src
+
+Run the test cases:
+#+begin_src sh
+./build.sh test
+#+end_src
+
+You can view all the options of the build script with
+#+begin_src sh
+./build.sh help
+#+end_src
